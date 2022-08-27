@@ -1,7 +1,7 @@
 #include "Player.hpp"
 
-Player::Player(Vector2 position, const char* filePath, const int numberOfFrames)
-: position(position), spriteSheet(filePath, numberOfFrames) {
+Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, int scale)
+: position(position), spriteSheet(texture, numberOfFrames, scale) {
 
 }
 
