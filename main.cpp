@@ -8,18 +8,18 @@
 
 int main()
 {
-    const int winW = 800;
-    const int winH = 700;
+    const int winW = 1000;
+    const int winH = 750;
 
     InitWindow(winW, winH, "Uter");
-    loadTextures();
-    SetTargetFPS(60);
-    Image icon = LoadImageFromTexture(peoSS);
+    textures->loadTextures();
+    SetTargetFPS(144);
+    Image icon = LoadImageFromTexture(textures->peoStill);
     SetWindowIcon(icon);
 
-    Player player = Player(Vector2{10, 10}, peoSS, 4, 5);
+    Player player = Player(Vector2{10, 10}, textures->peoSS, 4, 5);
     
-    SetExitKey(KEY_NULL);
+    //SetExitKey(KEY_NULL);
     bool running = true;
     while (running) 
     {
@@ -33,7 +33,7 @@ int main()
         BeginDrawing();
         ClearBackground(Color{0, 0, 0, 255});
 
-        player.spriteSheet.animateDraw(10, GetFrameTime(), player.position);
+        player.draw();
 
         EndDrawing();
     }

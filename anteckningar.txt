@@ -1,6 +1,12 @@
 
 
 Characters:
+
 Old man wizard (Cree)
+
 Boy sling shot (Peo)
+    * Dash and agile
+    * Low damage
+
+    
 Woman bow and arrow (Menskin)

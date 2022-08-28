@@ -6,15 +6,18 @@
 
 class SpriteSheet {
 public:
-    SpriteSheet(Texture2D texture, const int numberOfFrames, int scale);
-    void animateDraw(float fps, float deltaTime, Vector2 drawPosition);
+    SpriteSheet(Texture2D texture, const int numberOfFrames, float scale);
+    void animate(float fps, float deltaTime);
+    void draw(Vector2 drawPosition);
 
-private:
     Texture2D texture;
     const int numberOfFrames;
-    int scale;
+    float scale;
     int currentFrame;
     int frameWidth;
     float timer;
+    Rectangle srcRect;
+    Rectangle dstRect;
+    int facing;
 };
 #endif
