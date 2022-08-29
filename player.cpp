@@ -6,8 +6,9 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, in
 : position(position), collisionPosition(position), spriteSheet(texture, numberOfFrames, scale) {
     velocity = Vector2{0, 0};
     runSpeed = 400;
-    jumpForce = 1000;
-    damp = 0.0001;
+    jumpForce = 2000;
+    damp = 0.000001;
+    jumps = 1;
 }
 
 void Player::update() {
@@ -18,8 +19,11 @@ void Player::update() {
 
     if (abs(velocity.x) < 5) {
         velocity.x = 0;
-        spriteSheet.texture = textures->peoStill;
+        spriteSheet.texture = peoStill;
+    } else {
+        spriteSheet.texture = peoSS;
     }
+
     if (abs(velocity.x) > 0) {
         if (velocity.x > 0) 
             spriteSheet.facing = 1;
@@ -35,16 +39,17 @@ void Player::update() {
     if (IsKeyDown(KEY_D)) {
         velocity.x = runSpeed;
     }
-    if (IsKeyDown(KEY_SPACE)) {
+    if (IsKeyDown(KEY_SPACE) && jumps > 0) {
         velocity.y = -jumpForce;
+        jumps -= 1;
     }
 
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
 
-
     if (position.y > 750 - spriteSheet.texture.height * spriteSheet.scale) {
         position.y = 750 - spriteSheet.texture.height * spriteSheet.scale;
+        jumps = 1;
     }
 }
 

@@ -12,12 +12,12 @@ int main()
     const int winH = 750;
 
     InitWindow(winW, winH, "Uter");
-    textures->loadTextures();
+    loadTextures();
     SetTargetFPS(144);
-    Image icon = LoadImageFromTexture(textures->peoStill);
+    Image icon = LoadImageFromTexture(peoStill);
     SetWindowIcon(icon);
 
-    Player player = Player(Vector2{10, 10}, textures->peoSS, 4, 5);
+    Player player = Player(Vector2{10, 10}, peoSS, 4, 5);
     
     //SetExitKey(KEY_NULL);
     bool running = true;

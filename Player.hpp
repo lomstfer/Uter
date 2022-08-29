@@ -19,5 +19,6 @@ public:
     float jumpForce;
     float gravity = 10000;
     float damp;
+    int jumps;
     
 };
