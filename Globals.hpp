@@ -1,8 +1,13 @@
 #ifndef TEXTURES_HPP
 #define TEXTURES_HPP
 #include <raylib.h>
-// ss = sprite sheet
 
+extern int winW;
+extern int winH;
+
+void changeWindowSize(int newWidth, int newHeight);
+
+// ss = sprite sheet
 extern Texture2D peoSS;
 extern Texture2D peoStill;
 

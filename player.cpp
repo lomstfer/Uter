@@ -47,11 +47,13 @@ void Player::update() {
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
 
-    if (position.y > 750 - spriteSheet.texture.height * spriteSheet.scale) {
-        position.y = 750 - spriteSheet.texture.height * spriteSheet.scale;
+    if (position.y > winH - spriteSheet.texture.height * spriteSheet.scale) {
+        position.y = winH - spriteSheet.texture.height * spriteSheet.scale;
         jumps = 1;
     }
 }
+
+
 
 void Player::draw() {
     spriteSheet.draw(position);
