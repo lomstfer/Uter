@@ -7,6 +7,7 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, in
     velocity = Vector2{0, 0};
     runSpeed = 400;
     jumpForce = 2000;
+    gravity = 10000;
     damp = 0.000001;
     jumps = 1;
 }

@@ -9,7 +9,6 @@ public:
     void update();
     void draw();
     
-    
     Vector2 position;
     Vector2 collisionPosition;
     SpriteSheet spriteSheet;
@@ -17,7 +16,7 @@ public:
     Vector2 velocity;
     float runSpeed;
     float jumpForce;
-    float gravity = 10000;
+    float gravity;
     float damp;
     int jumps;
     
