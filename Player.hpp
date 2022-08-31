@@ -1,7 +1,7 @@
 #include "SpriteSheet.hpp"
 #include <math.h>
 #include <iostream>
-#include "Textures.hpp"
+#include "Globals.hpp"
 
 class Player {
 public:

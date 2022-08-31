@@ -2,15 +2,12 @@
 #include <iostream>
 #include "SpriteSheet.hpp"
 #include "Player.hpp"
-#include "Textures.hpp"
+#include "Globals.hpp"
 
 #define Log(x) std::cout << x << std::endl;
 
 int main()
 {
-    const int winW = 1000;
-    const int winH = 750;
-
     InitWindow(winW, winH, "Uter");
     loadTextures();
     SetTargetFPS(144);
@@ -44,3 +41,6 @@ int main()
 
     return 0;
 }
+
+//#include <iostream>
+//#define Log(x) std::cout << x << std::endl;
