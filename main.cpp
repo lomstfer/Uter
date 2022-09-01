@@ -10,7 +10,7 @@ int main()
 {
     InitWindow(winW, winH, "Uter");
     loadTextures();
-    SetTargetFPS(144);
+    SetTargetFPS(60);
     Image icon = LoadImageFromTexture(peoStill);
     SetWindowIcon(icon);
 

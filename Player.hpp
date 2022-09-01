@@ -8,6 +8,8 @@ public:
     Player(Vector2 position, Texture2D texture, const int numberOfFrames, int scale);
     void update();
     void draw();
+
+    void dashMaking();
     
     Vector2 position;
     Vector2 collisionPosition;
@@ -19,5 +21,12 @@ public:
     float gravity;
     float damp;
     int jumps;
+
+    bool dashing;
+    bool justPressedLeft;
+    float pressAgainTime;
+    float pressAgainMaxTime;
+    float dashForce;
+    float dashCooldown;
     
 };
