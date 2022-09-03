@@ -3,18 +3,26 @@
 #define Log(x) std::cout << x << std::endl;
 
 Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, int scale)
-: position(position), collisionPosition(position), spriteSheet(texture, numberOfFrames, scale) {
+: position(position), collisionPosition(position), sS(texture, numberOfFrames, scale) {
     velocity = Vector2{0, 0};
-    runSpeed = 400;
+    collisionRect = Rectangle{position.x + 2 * sS.scale, 
+                              position.y + 1 * sS.scale, 
+                              (sS.fWidth - 2) * sS.scale, 
+                              sS.fHeight - sS.scale
+                              };
+    runSpeed = 700;
     jumpForce = 2000;
     gravity = 10000;
-    damp = 0.000001;
+    damp = 0.0000001;
+    airDamp = 0.01;
     jumps = 1;
+    maxJumps = jumps;
+    grounded = true;
 
     // dash
     dashCooldownCD = 2;
     pressAgainTimeCD = 0.5;
-    dashForce = 3000;
+    dashForce = 5000;
     dashTimeCD = 0.2;
 
     dashing = false;
@@ -31,21 +39,27 @@ void Player::update() {
     float dt = GetFrameTime();
 
     velocity.y += gravity * dt;
-    velocity.x *= pow(damp, dt);
+    if (grounded) {
+        velocity.x *= pow(damp, dt);
+    }
+    else {
+        velocity.x *= pow(airDamp, dt);
+    }
+        
 
     if (abs(velocity.x) < 5) {
         velocity.x = 0;
-        spriteSheet.texture = peoStill;
+        sS.texture = peoStill;
     } else {
-        spriteSheet.texture = peoSS;
+        sS.texture = peoSS;
     }
 
     if (abs(velocity.x) > 0) {
         if (velocity.x > 0) 
-            spriteSheet.facing = 1;
+            sS.facing = 1;
         else if (velocity.x < 0)
-            spriteSheet.facing = -1;
-        spriteSheet.animate(10, dt);
+            sS.facing = -1;
+        sS.animate(10, dt);
     }
     
     if (!dashing) {
@@ -58,9 +72,12 @@ void Player::update() {
         }
     }
     
-    if (IsKeyDown(KEY_SPACE) && jumps > 0) {
+    if (IsKeyDown(KEY_UP) && jumps > 0) {
         velocity.y = -jumpForce;
         jumps -= 1;
+    }
+    if (IsKeyReleased(KEY_UP)) {
+        jumps = 0;
     }
 
     dashMaking();
@@ -68,20 +85,28 @@ void Player::update() {
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
 
-    if (position.y > winH - spriteSheet.texture.height * spriteSheet.scale) {
-        position.y = winH - spriteSheet.texture.height * spriteSheet.scale;
-        jumps = 1;
+    collisionRect.x = position.x;
+    collisionRect.y = position.y;
+
+    if (position.y > winH - sS.fHeight * sS.scale) {
+        position.y = winH - sS.fHeight * sS.scale;
+        jumps = maxJumps;
+        grounded = true;
     }
-    if (position.x > winW - spriteSheet.frameWidth * spriteSheet.scale) {
-        position.x = winW - spriteSheet.frameWidth * spriteSheet.scale;
+    else {
+        grounded = false;
     }
-    if (position.x < 0) {
-        position.x = 0;
+
+    if (position.x + (sS.fWidth - 2) * sS.scale > winW) {
+        position.x = winW - (sS.fWidth - 2) * sS.scale;
+    }
+    if (position.x + 2 * sS.scale < 0) {
+        position.x = -2 * sS.scale;
     }
 }
 
 void Player::draw() {
-    spriteSheet.draw(position);
+    sS.draw(position);
 }
 
 void Player::dashMaking() {
@@ -109,6 +134,7 @@ void Player::dashMaking() {
         pressAgainTimeLeft += dt;
         if (IsKeyPressed(KEY_A) && pressAgainTimeLeft < pressAgainTimeCD) {
             velocity.x = -dashForce;
+            velocity.y = -dashForce / 10;;
             pressAgainTimeLeft = 0;
             dashing = true;
             justPressedLeft = false;
@@ -128,6 +154,7 @@ void Player::dashMaking() {
         pressAgainTimeRight += dt;
         if (IsKeyPressed(KEY_D) && pressAgainTimeRight < pressAgainTimeCD) {
             velocity.x = dashForce;
+            velocity.y = -dashForce / 10;
             pressAgainTimeRight = 0;
             dashing = true;
             justPressedRight = false;

@@ -14,7 +14,8 @@ public:
     const int numberOfFrames;
     float scale;
     int currentFrame;
-    int frameWidth;
+    int fWidth;;
+    int fHeight;
     float timer;
     Rectangle srcRect;
     Rectangle dstRect;

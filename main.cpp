@@ -14,7 +14,7 @@ int main()
     Image icon = LoadImageFromTexture(peoStill);
     SetWindowIcon(icon);
 
-    Player player = Player(Vector2{10, 10}, peoSS, 4, 5);
+    Player player = Player(Vector2{winW / 2.0f, 10}, peoSS, 4, 5);
     
     //SetExitKey(KEY_NULL);
     bool running = true;

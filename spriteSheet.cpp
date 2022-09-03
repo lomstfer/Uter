@@ -3,11 +3,12 @@
 
 SpriteSheet::SpriteSheet(Texture2D texture, const int numberOfFrames, float scale)
 : texture(texture), numberOfFrames(numberOfFrames), scale(scale) {
-    frameWidth = texture.width / numberOfFrames;
+    fWidth = texture.width / numberOfFrames;
+    fHeight = texture.height;
     currentFrame = 0;
     facing = 1;
-    srcRect = {float(frameWidth * currentFrame), 0.0f, (float)frameWidth * facing, (float)texture.height};
-    dstRect = {0, 0, (float)frameWidth * scale, (float)texture.height * scale};
+    srcRect = {float(fWidth * currentFrame), 0.0f, (float)fWidth * facing, (float)texture.height};
+    dstRect = {0, 0, (float)fWidth * scale, (float)texture.height * scale};
 }
 
 void SpriteSheet::animate(float fps, float deltaTime) {
@@ -17,10 +18,10 @@ void SpriteSheet::animate(float fps, float deltaTime) {
         currentFrame += 1;
     }
     currentFrame = currentFrame % numberOfFrames;
-    srcRect = {float(frameWidth * currentFrame), 0.0f, (float)frameWidth * facing, (float)texture.height};
+    srcRect = {float(fWidth * currentFrame), 0.0f, (float)fWidth * facing, (float)texture.height};
 }
 
 void SpriteSheet::draw(Vector2 drawPosition) {
-    dstRect = {drawPosition.x, drawPosition.y, (float)frameWidth * scale, (float)texture.height * scale};
+    dstRect = {drawPosition.x, drawPosition.y, (float)fWidth * scale, (float)texture.height * scale};
     DrawTexturePro(texture, srcRect, dstRect, Vector2{0, 0}, 0, Color{255, 255, 255, 255});
 }

@@ -13,14 +13,18 @@ public:
     
     Vector2 position;
     Vector2 collisionPosition;
-    SpriteSheet spriteSheet;
+    SpriteSheet sS;
+    Rectangle collisionRect;
 
     Vector2 velocity;
     float runSpeed;
     float jumpForce;
     float gravity;
     float damp;
-    int jumps;
+    float airDamp;
+    float jumps;
+    float maxJumps;
+    bool grounded;
 
     // dash
     bool dashing;
