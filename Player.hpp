@@ -22,11 +22,17 @@ public:
     float damp;
     int jumps;
 
+    // dash
     bool dashing;
     bool justPressedLeft;
-    float pressAgainTime;
-    float pressAgainMaxTime;
+    bool justPressedRight;
+    float pressAgainTimeLeft;
+    float pressAgainTimeRight;
+    float pressAgainTimeCD;
     float dashForce;
-    float dashCooldown;
-    
+    float dashTime;
+    float dashTimeCD;
+    float dashCooldownTime;
+    float dashCooldownCD;
+    bool just_dashed;
 };

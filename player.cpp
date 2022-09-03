@@ -11,12 +11,20 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, in
     damp = 0.000001;
     jumps = 1;
 
+    // dash
+    dashCooldownCD = 2;
+    pressAgainTimeCD = 0.5;
+    dashForce = 3000;
+    dashTimeCD = 0.2;
+
     dashing = false;
     justPressedLeft = false;
-    pressAgainTime = 0;
-    pressAgainMaxTime = 0.5;
-    dashForce = 3000;
-    dashCooldown = 2;
+    justPressedRight = false;
+    pressAgainTimeLeft = 0;
+    pressAgainTimeRight = 0;
+    dashTime = 0;
+    dashCooldownTime = 0;
+    just_dashed = false;
 }
 
 void Player::update() {
@@ -79,19 +87,59 @@ void Player::draw() {
 void Player::dashMaking() {
     float dt = GetFrameTime();
 
-    dashing = false;
+    if (dashing) {
+        just_dashed = true;
+        dashTime += dt;
+        Log("d:" + std::to_string(dashTime));
+        if (dashTime >= dashTimeCD) {
+            dashTime = 0;
+            dashing = false;
+        }
+    }
+
+    if (just_dashed) {
+        dashCooldownTime += dt;
+        if (dashCooldownTime >= dashCooldownCD) {
+            dashCooldownTime = 0;
+            just_dashed = false;
+        }
+    }
     
     if (justPressedLeft) {
-        pressAgainTime += dt;
-        if (IsKeyPressed(KEY_A) && pressAgainTime < pressAgainMaxTime) {
+        pressAgainTimeLeft += dt;
+        if (IsKeyPressed(KEY_A) && pressAgainTimeLeft < pressAgainTimeCD) {
             velocity.x = -dashForce;
-            pressAgainTime = 0;
+            pressAgainTimeLeft = 0;
             dashing = true;
+            justPressedLeft = false;
+        }
+        if (pressAgainTimeLeft >= pressAgainTimeCD) {
+            pressAgainTimeLeft = 0;
             justPressedLeft = false;
         }
     }
 
-    if (IsKeyPressed(KEY_A) && dashing == false) {
+    if (IsKeyPressed(KEY_A) && dashing == false && just_dashed == false) {
         justPressedLeft = true;
+        justPressedRight = false;
+    }
+
+    if (justPressedRight) {
+        pressAgainTimeRight += dt;
+        if (IsKeyPressed(KEY_D) && pressAgainTimeRight < pressAgainTimeCD) {
+            velocity.x = dashForce;
+            pressAgainTimeRight = 0;
+            dashing = true;
+            justPressedRight = false;
+        }
+        if (pressAgainTimeRight >= pressAgainTimeCD) {
+            pressAgainTimeRight = 0;
+            justPressedRight = false;
+        }
+    }
+
+    if (IsKeyPressed(KEY_D) && dashing == false && just_dashed == false) {
+        justPressedRight = true;
+        justPressedLeft = false;
     }
 }
