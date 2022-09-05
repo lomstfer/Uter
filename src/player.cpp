@@ -22,7 +22,7 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, in
     // dash
     dashCooldownCD = 2;
     pressAgainTimeCD = 0.5;
-    dashForce = 5000;
+    dashForce = 3000;
     dashTimeCD = 0.2;
 
     dashing = false;
