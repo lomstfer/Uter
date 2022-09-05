@@ -10,7 +10,7 @@ int main()
 {
     InitWindow(winW, winH, "Uter");
     loadTextures();
-    SetTargetFPS(60);
+    SetTargetFPS(144);
     Image icon = LoadImageFromTexture(peoStill);
     SetWindowIcon(icon);
 
@@ -24,13 +24,12 @@ int main()
             running = false;
         }
 
-        player.update();
+        
 
         // Draw ------
         BeginDrawing();
         ClearBackground(Color{0, 0, 0, 255});
-
-        player.draw();
+        player.update();
 
         EndDrawing();
     }

@@ -2,6 +2,8 @@
 #define TEXTURES_HPP
 #include <raylib.h>
 
+#define Log(x) std::cout << x << std::endl;
+
 extern int winW;
 extern int winH;
 

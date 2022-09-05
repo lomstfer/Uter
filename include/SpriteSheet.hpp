@@ -2,7 +2,7 @@
 #define SPRITE_SHEET_HPP
 #include <raylib.h>
 
-// Sprite sheet with only one row that is
+// Sprite sheet, with only one row that is
 
 class SpriteSheet {
 public:

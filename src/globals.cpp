@@ -1,7 +1,7 @@
 #include "Globals.hpp"
 
-int winW = 1000;
-int winH = 750;
+int winW = 1280;
+int winH = 720;
 
 void changeWindowSize(int newWidth, int newHeight) {
     SetWindowPosition(GetWindowPosition().x - (newWidth - winW) / 2, GetWindowPosition().y - (newHeight - winH) / 2);

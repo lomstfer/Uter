@@ -1,9 +1,7 @@
 #include "Player.hpp"
 
-#define Log(x) std::cout << x << std::endl;
-
 Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, int scale)
-: position(position), collisionPosition(position), sS(texture, numberOfFrames, scale) {
+: sS(texture, numberOfFrames, scale), position(position) {
     velocity = Vector2{0, 0};
     collisionRect = Rectangle{position.x + 2 * sS.scale, 
                               position.y + 1 * sS.scale, 
@@ -50,7 +48,8 @@ void Player::update() {
     if (abs(velocity.x) < 5) {
         velocity.x = 0;
         sS.texture = peoStill;
-    } else {
+    } 
+    else {
         sS.texture = peoSS;
     }
 
@@ -60,6 +59,10 @@ void Player::update() {
         else if (velocity.x < 0)
             sS.facing = -1;
         sS.animate(10, dt);
+        sS.draw(position);
+    } 
+    else {
+        sS.draw(position);
     }
     
     if (!dashing) {
@@ -105,17 +108,12 @@ void Player::update() {
     }
 }
 
-void Player::draw() {
-    sS.draw(position);
-}
-
 void Player::dashMaking() {
     float dt = GetFrameTime();
 
     if (dashing) {
         just_dashed = true;
         dashTime += dt;
-        Log("d:" + std::to_string(dashTime));
         if (dashTime >= dashTimeCD) {
             dashTime = 0;
             dashing = false;
@@ -134,7 +132,7 @@ void Player::dashMaking() {
         pressAgainTimeLeft += dt;
         if (IsKeyPressed(KEY_A) && pressAgainTimeLeft < pressAgainTimeCD) {
             velocity.x = -dashForce;
-            velocity.y = -dashForce / 10;;
+            velocity.y = -dashForce / 7;
             pressAgainTimeLeft = 0;
             dashing = true;
             justPressedLeft = false;
@@ -154,7 +152,7 @@ void Player::dashMaking() {
         pressAgainTimeRight += dt;
         if (IsKeyPressed(KEY_D) && pressAgainTimeRight < pressAgainTimeCD) {
             velocity.x = dashForce;
-            velocity.y = -dashForce / 10;
+            velocity.y = -dashForce / 7;
             pressAgainTimeRight = 0;
             dashing = true;
             justPressedRight = false;

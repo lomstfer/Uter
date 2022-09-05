@@ -1,12 +1,21 @@
-
+Todo:
+    * Boss systems, damage making
+    * Collider class
+    * Decide theme + make art xd
+    * Character abilities
+    * Menu
 
 Characters:
 
 Old man wizard (Cree)
+    * Shoots magic stuff with his stick
+    * Big damage no healing
 
 Boy sling shot (Peo)
     * Dash and agile
     * Low damage
 
-    
 Woman bow and arrow (Menskin)
+    * Roll
+    * Medium damage
+    * Can heal herself somehow

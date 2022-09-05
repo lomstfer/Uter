@@ -1,22 +1,21 @@
-#include "SpriteSheet.hpp"
+#include "Globals.hpp"
 #include <math.h>
 #include <iostream>
-#include "Globals.hpp"
+#include "SpriteSheet.hpp"
 
 class Player {
 public:
     Player(Vector2 position, Texture2D texture, const int numberOfFrames, int scale);
     void update();
-    void draw();
-
+    
+private:
     void dashMaking();
     
-    Vector2 position;
-    Vector2 collisionPosition;
     SpriteSheet sS;
+    Vector2 position;
     Rectangle collisionRect;
-
     Vector2 velocity;
+
     float runSpeed;
     float jumpForce;
     float gravity;
