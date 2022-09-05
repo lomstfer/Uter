@@ -1,7 +1,7 @@
 Todo:
-    * Boss systems, damage making
+    * Boss systems, generating boss art,damage making
+    * Decide story + make art xd
     * Collider class
-    * Decide theme + make art xd
     * Character abilities
     * Menu
 
@@ -16,6 +16,6 @@ Boy sling shot (Peo)
     * Low damage
 
 Woman bow and arrow (Menskin)
-    * Roll
     * Medium damage
     * Can heal herself somehow
+    * Roll ability

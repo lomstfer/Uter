@@ -8,19 +8,19 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, in
                               (sS.fWidth - 2) * sS.scale, 
                               sS.fHeight - sS.scale
                               };
-    runSpeed = 700;
-    jumpForce = 2000;
+    runSpeed = 900;
+    jumpForce = 2300;
     gravity = 10000;
-    damp = 0.0000001;
+    damp = 0.000001;
     airDamp = 0.01;
     jumps = 1;
     maxJumps = jumps;
     grounded = true;
 
     // dash
-    dashCooldownCD = 2;
+    dashCooldownCD = 0.5;
     pressAgainTimeCD = 0.5;
-    dashForce = 3000;
+    dashForce = 3300;
     dashTimeCD = 0.2;
 
     dashing = false;
@@ -90,11 +90,16 @@ void Player::update() {
 
     collisionRect.x = position.x;
     collisionRect.y = position.y;
-
     if (position.y > winH - sS.fHeight * sS.scale) {
         position.y = winH - sS.fHeight * sS.scale;
         jumps = maxJumps;
         grounded = true;
+
+        if (velocity.y > gravity * 0.01) {
+            // duns
+        }
+
+        velocity.y = 0;
     }
     else {
         grounded = false;
