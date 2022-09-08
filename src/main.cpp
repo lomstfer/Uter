@@ -11,7 +11,7 @@ int main()
 {
     InitWindow(winW, winH, "Uter");
     loadTextures();
-    SetTargetFPS(144);
+    SetTargetFPS(60);
     Image icon = LoadImageFromTexture(peoStill);
     SetWindowIcon(icon);
 
@@ -41,7 +41,7 @@ int main()
     for (int x = 0; x <= brec.width; x++) {
         for (int y = 0; y <= brec.height; y++) {
             if (sqrt(pow(x - brec.width/2, 2) + pow(y - brec.height/2, 2)) <= (brec.width + brec.height)/4) {
-                ImageDrawPixel(&testImg, x, y, Color{255, 255, 255, (unsigned char)(abs(x - brec.width/2))});
+                ImageDrawPixel(&testImg, x, y, Color{255, 255, 255, (unsigned char)(255)});
             }
                 
         }
