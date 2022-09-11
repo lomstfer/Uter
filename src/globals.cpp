@@ -1,7 +1,12 @@
 #include "Globals.hpp"
 
-int winW = 1280;
-int winH = 720;
+int WINW = 1920;
+int WINH = 1080;
+
+int SCREENW = 1920;
+int SCREENH = 1080;
+
+float SPRITESCALE = 8;//
 
 int ftint(float x) {
     if (x > 0)
@@ -11,10 +16,10 @@ int ftint(float x) {
 }
 
 void changeWindowSize(int newWidth, int newHeight) {
-    SetWindowPosition(GetWindowPosition().x - (newWidth - winW) / 2, GetWindowPosition().y - (newHeight - winH) / 2);
+    SetWindowPosition(GetWindowPosition().x - (newWidth - SCREENW) / 2, GetWindowPosition().y - (newHeight - SCREENH) / 2);
     SetWindowSize(newWidth, newHeight);
-    winW = newWidth;
-    winH = newHeight;
+    SCREENW = newWidth;
+    SCREENH = newHeight;
 }
 
 Color ConvertToRGBA(float r, float g, float b, float a) {
@@ -22,13 +27,17 @@ Color ConvertToRGBA(float r, float g, float b, float a) {
     g = g <= 0 ? 0 : g >= 1 ? 1 : g;
     b = b <= 0 ? 0 : b >= 1 ? 1 : b;
     a = a <= 0 ? 0 : a >= 1 ? 1 : a;
-    return Color{(unsigned char)(ftint(r*255)), (unsigned char)(ftint(g*255)), (unsigned char)(ftint(b*255)), (unsigned char)(ftint(a*255))};
+    return Color{(unsigned char)(int(r*255 + 0.5)), (unsigned char)(int(g*255 + 0.5)), (unsigned char)(int(b*255 + 0.5)), (unsigned char)(int(a*255 + 0.5))};
 }
 
-Texture2D peoSS;
-Texture2D peoStill;
+Texture2D PEOSS;
+Texture2D PEOSTILL;
+Texture2D BOSS1;
+Texture2D BOSSBIG;
 
 void loadTextures() {
-    peoSS = LoadTexture("assets/peo_run.png");
-    peoStill = LoadTexture("assets/peo.png");
+    PEOSS = LoadTexture("assets/peo_run.png");
+    PEOSTILL = LoadTexture("assets/peo.png");
+    BOSS1 = LoadTexture("assets/boss/rectangle.png");
+    BOSSBIG = LoadTexture("assets/boss/boss_long.png");
 }

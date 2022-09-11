@@ -5,14 +5,15 @@
 
 class Player {
 public:
-    Player(Vector2 position, Texture2D texture, const int numberOfFrames, int scale);
+    Player(Vector2 position, Texture2D texture, const int numberOfFrames, float scale);
     void update();
     
+    Vector2 position;
 private:
     void dashMaking();
     
     SpriteSheet sS;
-    Vector2 position;
+    
     Rectangle collisionRect;
     Vector2 velocity;
 

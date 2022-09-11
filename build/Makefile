@@ -1,2 +1,2 @@
 default:
-	g++ ../src/main.cpp ../src/player.cpp ../src/spriteSheet.cpp ../src/globals.cpp ../src/boss.cpp extra_rice.o -o a.exe -O2 -Wall -Wno-missing-braces -I ../include/ -L ../lib -lraylib -lopengl32 -lgdi32 -lwinmm
+	g++ ../src/main.cpp ../src/player.cpp ../src/spriteSheet.cpp ../src/globals.cpp ../src/boss.cpp extra_rice.o -o a.exe -Wno-narrowing -O2 -Wall -Wno-missing-braces -I ../include/ -L ../lib -lraylib -lopengl32 -lgdi32 -lwinmm

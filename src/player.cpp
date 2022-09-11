@@ -1,7 +1,7 @@
 #include "Player.hpp"
 
-Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, int scale)
-: sS(texture, numberOfFrames, scale), position(position) {
+Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, float scale)
+: position(position), sS(texture, numberOfFrames, scale)  {
     velocity = Vector2{0, 0};
     collisionRect = Rectangle{position.x + 2 * sS.scale, 
                               position.y + 1 * sS.scale, 
@@ -47,10 +47,10 @@ void Player::update() {
 
     if (abs(velocity.x) < 5) {
         velocity.x = 0;
-        sS.texture = peoStill;
+        sS.texture = PEOSTILL;
     } 
     else {
-        sS.texture = peoSS;
+        sS.texture = PEOSS;
     }
 
     if (abs(velocity.x) > 0) {
@@ -90,8 +90,8 @@ void Player::update() {
 
     collisionRect.x = position.x;
     collisionRect.y = position.y;
-    if (position.y > winH - sS.fHeight * sS.scale) {
-        position.y = winH - sS.fHeight * sS.scale;
+    if (position.y > WINH - sS.fHeight * sS.scale) {
+        position.y = WINH - sS.fHeight * sS.scale;
         jumps = maxJumps;
         grounded = true;
 
@@ -105,8 +105,8 @@ void Player::update() {
         grounded = false;
     }
 
-    if (position.x + (sS.fWidth - 2) * sS.scale > winW) {
-        position.x = winW - (sS.fWidth - 2) * sS.scale;
+    if (position.x + (sS.fWidth - 2) * sS.scale > WINW) {
+        position.x = WINW - (sS.fWidth - 2) * sS.scale;
     }
     if (position.x + 2 * sS.scale < 0) {
         position.x = -2 * sS.scale;
