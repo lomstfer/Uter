@@ -1,5 +1,5 @@
 Todo:
-    * Boss systems, generating boss art,damage making
+    * Boss systems, generating boss art(procedural former),damage making
     * Decide story + make art xd
     * Collider class
     * Character abilities
