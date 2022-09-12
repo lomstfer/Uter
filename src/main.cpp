@@ -18,6 +18,7 @@ int main()
     SetWindowState(FLAG_FULLSCREEN_MODE);
 
     RenderTexture2D renderTarget = LoadRenderTexture(WINW, WINH);
+    RenderTexture2D rE = LoadRenderTexture(32, 32);
 
     float logTime = 0;
 
@@ -45,6 +46,10 @@ int main()
 
     float dt;
     //SetExitKey(KEY_NULL);
+
+    float rot = 0;
+
+
     bool running = true;
     while (running) 
     {
@@ -61,6 +66,12 @@ int main()
 
         light = GetMousePosition();
 
+        BeginTextureMode(rE);
+        DrawLine(16,0,32,32,WHITE);
+        DrawLine(1,31,31,31,WHITE);
+        DrawLine(0,32,16,0,WHITE);
+        EndTextureMode();
+        rot += dt * 100;
         // Draw ------
         BeginDrawing();
         BeginTextureMode(renderTarget);
@@ -70,10 +81,13 @@ int main()
             DrawTextureEx(testTexture, Vector2{brec.x, brec.y}, 0, bs, Color{255, 255, 255, 255});
 
             player.update();
-            boss.update(player.position);
-        
+            //boss.update(player.position);
+            
+            DrawTexturePro(rE.texture, {0,0,rE.texture.width,-rE.texture.height}, {WINW/2,100,rE.texture.width*10,rE.texture.height*10}, Vector2{rE.texture.width/2*10,rE.texture.height/2*10}, rot, Color{255,255,255,255});
+            
         EndTextureMode();
         DrawTexturePro(renderTarget.texture, Rectangle{0,0,float(renderTarget.texture.width),float(-renderTarget.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, WHITE);
+        
         EndDrawing();
     }
 

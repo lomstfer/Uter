@@ -43,6 +43,7 @@ Boss::Boss(Vector2 position)
     default: break;
     }
     
+    shapeTarget = LoadRenderTexture(32, 32);
 }
 
 void Boss::update(Vector2 playerPosition) {
@@ -56,13 +57,20 @@ void Boss::update(Vector2 playerPosition) {
     default:
         break;
     }
-
+    
     rotationSpeed = GetFrameTime() * (velocity.x) * 10;
     if (rotationSpeed > rotationSpeedMax)
         rotationSpeed = rotationSpeedMax;
     rotation += rotationSpeed * GetFrameTime();
 
-    DrawTexturePro(tT, {0,0,tT.width,tT.height}, {position.x,position.y,tT.width*scale,tT.height*scale}, Vector2{tT.width/2*scale,tT.height/2*scale}, rotation, Color{255,255,255,255});
+    BeginTextureMode(shapeTarget);
+    ClearBackground(Color{0, 0, 0, 255});
+    DrawRectangle(0,0,32,32,WHITE);
+    EndTextureMode();
+    
+    DrawTexturePro(shapeTarget.texture, {0,0,shapeTarget.texture.width,-shapeTarget.texture.height}, {position.x,position.y,shapeTarget.texture.width*10,shapeTarget.texture.height*10}, Vector2{0,0}, rotation, Color{255,255,255,255});
+
+    //DrawTexturePro(tT, {0,0,tT.width,tT.height}, {position.x,position.y,tT.width*scale,tT.height*scale}, Vector2{tT.width/2*scale,tT.height/2*scale}, rotation, Color{255,255,255,255});
 }
 
 void Boss::mov1() {

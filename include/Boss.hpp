@@ -34,4 +34,6 @@ private:
     Vector2 p3;
     Vector2 p4;
     Vector2 p5;
+
+    RenderTexture2D shapeTarget;
 };
