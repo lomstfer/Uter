@@ -10,7 +10,7 @@ int main()
 {
     InitWindow(winW, winH, "Uter");
     loadTextures();
-    SetTargetFPS(144);
+    SetTargetFPS(60);
     Image icon = LoadImageFromTexture(peoStill);
     SetWindowIcon(icon);
 
@@ -22,20 +22,17 @@ int main()
 
     for (int i = 0; i <= winW; i++) {
         for (int j = 0; j <= winH; j++) {
-            ImageDrawPixel(&backgroundImg, i, j, Color{(unsigned char)(GetRandomValue(0, 20)), (unsigned char)(GetRandomValue(0, 20)), (unsigned char)(GetRandomValue(0, 20)), 255});
+            ImageDrawPixel(&backgroundImg, i, j, Color{(unsigned char)(GetRandomValue(0, 50)), (unsigned char)(GetRandomValue(0, 50)), (unsigned char)(GetRandomValue(0, 50)), 255});
         }
     }
 
     Texture2D backgroundTexture = LoadTextureFromImage(backgroundImg);
 
     int bs = 1;
-    Rectangle brec = Rectangle{winW/2 - brec.width*bs/2, 100, 512, 512};
-    Vector2 brecVec = Vector2{0, 0};
+    Rectangle brec = Rectangle{winW/2 - brec.width*bs/2, 100, 128, 128};
     int brecx;
     int brecy;
     Image testImg = GenImageColor(brec.width, brec.height, BLANK);
-
-    Color ct = ConvertToRGBA(0.5,0,0,0);
 
     /*for (int i = 0; i <= brec.width; i++) {
         for (int j = 0; j <= brec.height; j++) {
@@ -43,17 +40,17 @@ int main()
         }
     }*/
 
-    Vector2 light = Vector2{0, 0};
+    Vector2 light = Vector2{400, 100};
 
-    // head
-    /* for (int x = 0; x <= brec.width; x++) {
+    for (int x = 0; x <= brec.width; x++) {
         for (int y = 0; y <= brec.height; y++) {
             if (sqrt(pow(x + 0.5 - brec.width/2, 2) + pow(y + 0.5 - brec.height/2, 2)) <= brec.width/brec.height * brec.width/2) {
-                float d = sqrt(pow(brec.x + x + light.x, 2) + pow(brec.y + y - light.y, 2));
-                ImageDrawPixel(&testImg, x, y, ConvertToRGBA(d / 500, d / 500, d / 500, 1));
+                float d = sqrt(pow(brec.x + x - light.x, 2) + pow(brec.y + y - light.y, 2)) * 18;
+                float c = 1 - d;
+                ImageDrawPixel(&testImg, x, y, ConvertToRGBA(c, c, c, 1));
             }
         }
-    } */
+    }
 
     /* // eyes
     for (int i = 0; i <= 20; i++) {
@@ -85,10 +82,8 @@ int main()
         logTime += GetFrameTime();
         if (logTime >= 0.1) {
             logTime = 0;
-            //Log(std::to_string(GetFrameTime() * 1000) + " ms");
+            Log(std::to_string(GetFrameTime() * 1000) + " ms");
         }
-
-        light = GetMousePosition();
 
         brec.y += sin(GetTime()) * 60 * dt;
         brecx = brec.x + brec.width/2;
