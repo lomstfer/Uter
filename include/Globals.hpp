@@ -21,8 +21,9 @@ Color ConvertToRGBA(float r, float g, float b, float a);
 // ss = sprite sheet
 extern Texture2D PEOSS;
 extern Texture2D PEOSTILL;
-extern Texture2D BOSS1;
 extern Texture2D BOSSBIG;
+extern Texture2D RECTANGLE;
+extern Texture2D TRIANGLE;
 
 void loadTextures();
 

@@ -28,23 +28,21 @@ Boss::Boss(Vector2 position)
     rotation = 0;
     rotationSpeed = 0;
     rotationSpeedMax = 10;
-    shape = 1;
+    shape = 2;
     switch (shape)
     {
-    case 1: 
-        p1.x = position.x + 100;
-        p1.y = position.y - 100;
-        p2.x = position.x + 100;
-        p2.y = position.y + 100;
-        p3.x = position.x - 100;
-        p3.y = position.y + 100;
-        p4.x = position.x - 100;
-        p4.y = position.y - 100;
+    case 1:
+        // rectangle
+        tT = RECTANGLE;
     break;
+
+    case 2:
+        // triangle
+        tT = TRIANGLE;
     
     default: break;
     }
-    tT = BOSS1;
+    
 }
 
 void Boss::update(Vector2 playerPosition) {
@@ -59,54 +57,24 @@ void Boss::update(Vector2 playerPosition) {
         break;
     }
 
-    rotationSpeed = GetFrameTime() * (velocity.x);
+    rotationSpeed = GetFrameTime() * (velocity.x) * 10;
     if (rotationSpeed > rotationSpeedMax)
         rotationSpeed = rotationSpeedMax;
     rotation += rotationSpeed * GetFrameTime();
 
-    p1 = rotate_point(position.x, position.y, rotation, p1);
-    p2 = rotate_point(position.x, position.y, rotation, p2);
-    p3 = rotate_point(position.x, position.y, rotation, p3);
-    p4 = rotate_point(position.x, position.y, rotation, p4);
-
-    DrawLine(p1.x, p1.y, p2.x, p2.y, WHITE);
-    DrawLine(p2.x, p2.y, p3.x, p3.y, WHITE);
-    DrawLine(p3.x, p3.y, p4.x, p4.y, WHITE);
-    DrawLine(p4.x, p4.y, p1.x, p1.y, WHITE);
-    DrawLine(position.x, position.y, p2.x, p2.y, WHITE);
-    DrawLine(position.x, position.y, p3.x, p3.y, WHITE);
-    DrawLine(position.x, position.y, p1.x, p1.y, WHITE);
-    DrawLine(position.x, position.y, p4.x, p4.y, WHITE);
-
-    switch (shape)
-    {
-    case 1:
-        DrawTexturePro(tT, {0,0,tT.width,tT.height}, {position.x,position.y,tT.width*scale,tT.height*scale}, Vector2{tT.width/2*scale,tT.height/2*scale}, rotation, Color{255,255,255,255});
-        break;
-    case 2:
-        DrawTexturePro(tT, {0,0,tT.width,tT.height}, {position.x,position.y,tT.width*scale,tT.height*scale}, Vector2{tT.width/2*scale,tT.height/2*scale}, rotation, WHITE);
-        break;
-    default:
-        break;
-    }
+    DrawTexturePro(tT, {0,0,tT.width,tT.height}, {position.x,position.y,tT.width*scale,tT.height*scale}, Vector2{tT.width/2*scale,tT.height/2*scale}, rotation, Color{255,255,255,255});
 }
 
 void Boss::mov1() {
     float dt = GetFrameTime();
 
     position.y += sin(GetTime()) * difficulty * 100 * dt;
-    p1.y += sin(GetTime()) * difficulty * 100 * dt;
-    p2.y += sin(GetTime()) * difficulty * 100 * dt;
-    p3.y += sin(GetTime()) * difficulty * 100 * dt;
-    p4.y += sin(GetTime()) * difficulty * 100 * dt;
 
     if (playerPos.x > position.x + 100) {
         velocity.x += difficulty * 50 * dt;
-        velocity.x += difficulty * rotationSpeed * 10 * dt;
     }
     if (playerPos.x < position.x - 100) {
         velocity.x -= difficulty * 50 * dt;
-        velocity.x += difficulty * rotationSpeed * 10 * dt;
     }
 
     if (position.x < 0) {
@@ -121,8 +89,4 @@ void Boss::mov1() {
     }
 
     position.x += velocity.x * dt;
-    p1.x += velocity.x * dt;
-    p2.x += velocity.x * dt;
-    p3.x += velocity.x * dt;
-    p4.x += velocity.x * dt;
 }

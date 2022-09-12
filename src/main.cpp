@@ -15,6 +15,7 @@ int main()
     SetTargetFPS(144);
     Image icon = LoadImageFromTexture(PEOSTILL);
     SetWindowIcon(icon);
+    SetWindowState(FLAG_FULLSCREEN_MODE);
 
     RenderTexture2D renderTarget = LoadRenderTexture(WINW, WINH);
 

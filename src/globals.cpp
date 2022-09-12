@@ -32,12 +32,14 @@ Color ConvertToRGBA(float r, float g, float b, float a) {
 
 Texture2D PEOSS;
 Texture2D PEOSTILL;
-Texture2D BOSS1;
 Texture2D BOSSBIG;
+Texture2D RECTANGLE;
+Texture2D TRIANGLE;
 
 void loadTextures() {
     PEOSS = LoadTexture("assets/peo_run.png");
     PEOSTILL = LoadTexture("assets/peo.png");
-    BOSS1 = LoadTexture("assets/boss/rectangle.png");
     BOSSBIG = LoadTexture("assets/boss/boss_long.png");
+    RECTANGLE = LoadTexture("assets/boss/rectangle.png");
+    TRIANGLE = LoadTexture("assets/boss/triangle.png");
 }
