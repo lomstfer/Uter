@@ -1,12 +1,12 @@
 #include "Globals.hpp"
 
-int WINW = 1920;
-int WINH = 1080;
+int WINW = 1280;
+int WINH = 720;
 
 int SCREENW = 1920;
 int SCREENH = 1080;
 
-float SPRITESCALE = 8;//
+float SPRITESCALE = 5;//
 
 int ftint(float x) {
     if (x > 0)
@@ -16,7 +16,7 @@ int ftint(float x) {
 }
 
 void changeWindowSize(int newWidth, int newHeight) {
-    SetWindowPosition(GetWindowPosition().x - (newWidth - SCREENW) / 2, GetWindowPosition().y - (newHeight - SCREENH) / 2);
+    SetWindowPosition(GetWindowPosition().x - (newWidth - SCREENW)/2, GetWindowPosition().y - (newHeight - SCREENH)/2);
     SetWindowSize(newWidth, newHeight);
     SCREENW = newWidth;
     SCREENH = newHeight;

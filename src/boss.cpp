@@ -1,6 +1,6 @@
 #include "Boss.hpp"
 
-Vector2 rotate_point(float cx, float cy, float angle, Vector2 p)
+Vector2 rotatePoint(float cx, float cy, float angle, Vector2 p)
 {
   float s = sin(angle);
   float c = cos(angle);
@@ -24,6 +24,8 @@ Boss::Boss(Vector2 position)
     movementSystem = 1;
     scale = SPRITESCALE;
     difficulty = 1;
+
+    velocity = {0,0};
     
     rotation = 0;
     rotationSpeed = 0;
@@ -32,18 +34,33 @@ Boss::Boss(Vector2 position)
     switch (shape)
     {
     case 1:
+        shapeTarget = LoadRenderTexture(32, 32);
+
         // rectangle
         tT = RECTANGLE;
     break;
 
     case 2:
+        shapeTarget = LoadRenderTexture(128, 128);
         // triangle
         tT = TRIANGLE;
+        
+        // right leg
+        p1s = {shapeTarget.texture.width/2,30};
+        p1e = {shapeTarget.texture.width-32,shapeTarget.texture.height-44};
+
+        // left leg
+        p2s = {p1s.x,p1s.y};
+        p2e = {32,shapeTarget.texture.height-44};
+
+        // bottom
+        p3s = {p2e.x, p2e.y};
+        p3e = {p1e.x, p1e.y};
     
     default: break;
     }
     
-    shapeTarget = LoadRenderTexture(32, 32);
+    
 }
 
 void Boss::update(Vector2 playerPosition) {
@@ -58,19 +75,32 @@ void Boss::update(Vector2 playerPosition) {
         break;
     }
     
-    rotationSpeed = GetFrameTime() * (velocity.x) * 10;
+    rotationSpeed = velocity.x;
     if (rotationSpeed > rotationSpeedMax)
         rotationSpeed = rotationSpeedMax;
+    if (rotationSpeed < -rotationSpeedMax)
+        rotationSpeed = -rotationSpeedMax;
     rotation += rotationSpeed * GetFrameTime();
 
-    BeginTextureMode(shapeTarget);
-    ClearBackground(Color{0, 0, 0, 255});
-    DrawRectangle(0,0,32,32,WHITE);
-    EndTextureMode();
-    
-    DrawTexturePro(shapeTarget.texture, {0,0,shapeTarget.texture.width,-shapeTarget.texture.height}, {position.x,position.y,shapeTarget.texture.width*10,shapeTarget.texture.height*10}, Vector2{0,0}, rotation, Color{255,255,255,255});
+    p1s = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p1s);
+    p1e = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p1e);
 
-    //DrawTexturePro(tT, {0,0,tT.width,tT.height}, {position.x,position.y,tT.width*scale,tT.height*scale}, Vector2{tT.width/2*scale,tT.height/2*scale}, rotation, Color{255,255,255,255});
+    p2s = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p2s);
+    p2e = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p2e);
+
+    p3s = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p3s);
+    p3e = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p3e);
+
+    BeginTextureMode(shapeTarget);
+        ClearBackground(Color{0, 0, 0, 0});
+        DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,WHITE);
+        DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,BLUE);
+        DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,GREEN);
+    EndTextureMode();
+}
+
+void Boss::draw() {
+    DrawTexturePro(shapeTarget.texture, {0,0,shapeTarget.texture.width,-shapeTarget.texture.height}, {position.x,position.y,shapeTarget.texture.width*scale,shapeTarget.texture.height*scale}, Vector2{shapeTarget.texture.width/2*scale,shapeTarget.texture.height/2*scale}, 0, Color{255,255,255,255});
 }
 
 void Boss::mov1() {
