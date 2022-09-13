@@ -29,29 +29,41 @@ Boss::Boss(Vector2 position)
     
     rotation = 0;
     rotationSpeed = 0;
-    rotationSpeedMax = 10;
+    rotationSpeedMax = 20;
     shape = 2;
+
     switch (shape)
     {
     case 1:
-        shapeTarget = LoadRenderTexture(32, 32);
-
         // rectangle
+        shapeT = LoadRenderTexture(64, 64);
         tT = RECTANGLE;
+        // up
+        p1s = {shapeT.texture.width/4,shapeT.texture.height/4};
+        p1e = {shapeT.texture.width/4 + 32,shapeT.texture.height/4};
+        // down
+        p2s = {shapeT.texture.width/4,shapeT.texture.height/4 + 32};
+        p2e = {shapeT.texture.width/4 + 32,shapeT.texture.height/4 + 32};
+        // left
+        p3s = {p1s.x, p1s.y};
+        p3e = {p2s.x, p2s.y};
+        // right
+        p4s = {p1e.x, p1e.y};
+        p4e = {p2e.x, p2e.y};
     break;
 
     case 2:
-        shapeTarget = LoadRenderTexture(128, 128);
         // triangle
+        shapeT = LoadRenderTexture(80, 80);
         tT = TRIANGLE;
         
         // right leg
-        p1s = {shapeTarget.texture.width/2,30};
-        p1e = {shapeTarget.texture.width-32,shapeTarget.texture.height-44};
+        p1s = {shapeT.texture.width/2,0.23*shapeT.texture.height};
+        p1e = {shapeT.texture.width - 0.25*shapeT.texture.width,shapeT.texture.height - 0.34*shapeT.texture.height};
 
         // left leg
         p2s = {p1s.x,p1s.y};
-        p2e = {32,shapeTarget.texture.height-44};
+        p2e = {0.25*shapeT.texture.width,shapeT.texture.height-0.34*shapeT.texture.height};
 
         // bottom
         p3s = {p2e.x, p2e.y};
@@ -75,36 +87,67 @@ void Boss::update(Vector2 playerPosition) {
         break;
     }
     
+    switch (shape)
+    {
+    case 1:
+        // rectangle
+        p1s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p1s);
+        p1e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p1e);
+
+        p2s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p2s);
+        p2e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p2e);
+
+        p3s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p3s);
+        p3e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p3e);
+
+        p4s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p4s);
+        p4e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p4e);
+
+        BeginTextureMode(shapeT);
+            ClearBackground(Color{0, 0, 0, 0});
+            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,WHITE);
+            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,WHITE);
+            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,WHITE);
+            DrawLine(p4s.x,p4s.y,p4e.x,p4e.y,WHITE);
+        EndTextureMode();
+    break;
+
+    case 2:
+        // triangle
+        p1s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p1s);
+        p1e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p1e);
+
+        p2s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p2s);
+        p2e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p2e);
+
+        p3s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p3s);
+        p3e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p3e);
+
+        BeginTextureMode(shapeT);
+            ClearBackground(Color{0, 0, 0, 0});
+            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,WHITE);
+            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,WHITE);
+            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,WHITE);
+        EndTextureMode();
+    
+    default: break;
+    }
+    
+}
+
+void Boss::draw() {
+    DrawTexturePro(shapeT.texture, {0,0,shapeT.texture.width,-shapeT.texture.height}, {position.x,position.y,shapeT.texture.width*scale,shapeT.texture.height*scale}, Vector2{shapeT.texture.width/2*scale,shapeT.texture.height/2*scale}, 0, Color{255,255,255,255});
+}
+
+void Boss::mov1() {
+    float dt = GetFrameTime();
+
     rotationSpeed = velocity.x;
     if (rotationSpeed > rotationSpeedMax)
         rotationSpeed = rotationSpeedMax;
     if (rotationSpeed < -rotationSpeedMax)
         rotationSpeed = -rotationSpeedMax;
     rotation += rotationSpeed * GetFrameTime();
-
-    p1s = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p1s);
-    p1e = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p1e);
-
-    p2s = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p2s);
-    p2e = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p2e);
-
-    p3s = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p3s);
-    p3e = rotatePoint(64, 64, rotationSpeed * 0.1 * GetFrameTime(), p3e);
-
-    BeginTextureMode(shapeTarget);
-        ClearBackground(Color{0, 0, 0, 0});
-        DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,WHITE);
-        DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,BLUE);
-        DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,GREEN);
-    EndTextureMode();
-}
-
-void Boss::draw() {
-    DrawTexturePro(shapeTarget.texture, {0,0,shapeTarget.texture.width,-shapeTarget.texture.height}, {position.x,position.y,shapeTarget.texture.width*scale,shapeTarget.texture.height*scale}, Vector2{shapeTarget.texture.width/2*scale,shapeTarget.texture.height/2*scale}, 0, Color{255,255,255,255});
-}
-
-void Boss::mov1() {
-    float dt = GetFrameTime();
 
     position.y += sin(GetTime()) * difficulty * 100 * dt;
 

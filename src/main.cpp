@@ -23,7 +23,7 @@ int main()
 
     Player player = Player(Vector2{WINW/2.0f - PEOSTILL.width/2, 10}, PEOSS, 4, SPRITESCALE);
 
-    Boss boss = Boss(Vector2{WINW/2.f, 100});
+    Boss boss = Boss(Vector2{WINW/2.f, WINH/7});
 
     Image backgroundImg = GenImageColor(WINW/SPRITESCALE, WINH/SPRITESCALE, BLANK);
 
@@ -58,9 +58,6 @@ int main()
             logTime = 0;
             Log(std::to_string(GetFrameTime() * 1000) + " ms");
         }
-
-        light = GetMousePosition();
-
         
         boss.update(player.position);
 

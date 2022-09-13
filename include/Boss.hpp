@@ -41,5 +41,5 @@ private:
     Vector2 p5s;
     Vector2 p5e;
 
-    RenderTexture2D shapeTarget;
+    RenderTexture2D shapeT;
 };
