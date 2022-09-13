@@ -6,7 +6,7 @@ int WINH = 720;
 int SCREENW = 1920;
 int SCREENH = 1080;
 
-float SPRITESCALE = 5;//
+float SPRITESCALE = 5;
 
 int ftint(float x) {
     if (x > 0)
@@ -35,6 +35,7 @@ Texture2D PEOSTILL;
 Texture2D BOSSBIG;
 Texture2D RECTANGLE;
 Texture2D TRIANGLE;
+Texture2D SMALL_CIRCLE;
 
 void loadTextures() {
     PEOSS = LoadTexture("assets/peo_run.png");
@@ -42,4 +43,5 @@ void loadTextures() {
     BOSSBIG = LoadTexture("assets/boss/boss_long.png");
     RECTANGLE = LoadTexture("assets/boss/rectangle.png");
     TRIANGLE = LoadTexture("assets/boss/triangle.png");
+    SMALL_CIRCLE = LoadTexture("assets/boss/small_circle.png");
 }

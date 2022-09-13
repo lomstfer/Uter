@@ -1,5 +1,6 @@
-#include "Globals.hpp"
 #include <math.h>
+#include <vector>
+#include "Globals.hpp"
 #include <iostream>
 #include "SpriteSheet.hpp"
 
@@ -42,4 +43,12 @@ private:
     Vector2 p5e;
 
     RenderTexture2D shapeT;
+
+    class Attack {
+    public:
+        Attack(Vector2 position);
+        Vector2 position;
+    };
+    std::vector<Attack> attackList;
+    float attackTime;
 };

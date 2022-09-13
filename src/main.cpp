@@ -54,7 +54,7 @@ int main()
         }
 
         logTime += GetFrameTime();
-        if (logTime >= 0.1) {
+        if (logTime >= 1) {
             logTime = 0;
             Log(std::to_string(GetFrameTime() * 1000) + " ms");
         }

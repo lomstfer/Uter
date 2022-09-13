@@ -24,6 +24,7 @@ extern Texture2D PEOSTILL;
 extern Texture2D BOSSBIG;
 extern Texture2D RECTANGLE;
 extern Texture2D TRIANGLE;
+extern Texture2D SMALL_CIRCLE;
 
 void loadTextures();
 
