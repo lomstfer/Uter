@@ -35,14 +35,6 @@ int main()
 
     Texture2D backgroundTexture = LoadTextureFromImage(backgroundImg);
 
-    int bs = 4;
-    Rectangle brec = Rectangle{WINW/2 - brec.width*bs/2, 100, 64, 64};
-    Image testImg = GenImageColor(brec.width, brec.height, BLANK);
-
-    Vector2 light = Vector2{0, 0};
-
-    Texture2D testTexture = LoadTextureFromImage(testImg);
-
     float dt;
     //SetExitKey(KEY_NULL);
     bool running = true;
@@ -67,11 +59,9 @@ int main()
             ClearBackground(Color{0, 0, 0, 255});
         
             DrawTextureEx(backgroundTexture, Vector2{0, 0}, 0, SPRITESCALE, Color{255, 255, 255, 255});
-            DrawTextureEx(testTexture, Vector2{brec.x, brec.y}, 0, bs, Color{255, 255, 255, 255});
 
             player.update();
             boss.draw();
-            
             
         EndTextureMode();
         DrawTexturePro(renderTarget.texture, Rectangle{0,0,float(renderTarget.texture.width),float(-renderTarget.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, WHITE);

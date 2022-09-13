@@ -85,7 +85,7 @@ void Boss::update(Vector2 playerPosition) {
         attackTime = 0;
         attack();
     }
-
+    
     switch (movementSystem)
     {
     case 1: mov1(); break;
@@ -140,15 +140,15 @@ void Boss::update(Vector2 playerPosition) {
     
     default: break;
     }
+
+    updateAttacks();
 }
 
 Boss::Attack::Attack(Vector2 position)
 : position(position) {}
 
-void Boss::draw() {
-    DrawTexturePro(shapeT.texture, {0,0,shapeT.texture.width,-shapeT.texture.height}, {position.x,position.y,shapeT.texture.width*scale,shapeT.texture.height*scale}, Vector2{shapeT.texture.width/2*scale,shapeT.texture.height/2*scale}, 0, Color{255,255,255,255});
+void Boss::updateAttacks() {
     for (int i = 0; i < attackList.size();) {
-        DrawTextureEx(SMALL_CIRCLE, {attackList[i].position.x - SMALL_CIRCLE.width*SPRITESCALE/2,attackList[i].position.y - SMALL_CIRCLE.height*SPRITESCALE/2}, 0, SPRITESCALE, WHITE);
         attackList[i].position.y += 1;
         if (attackList[i].position.y > WINH) {
             attackList.erase(attackList.begin() + i);
@@ -156,6 +156,13 @@ void Boss::draw() {
         else {
             i++;
         }
+    }
+}
+
+void Boss::draw() {
+    DrawTexturePro(shapeT.texture, {0,0,shapeT.texture.width,-shapeT.texture.height}, {position.x,position.y,shapeT.texture.width*scale,shapeT.texture.height*scale}, Vector2{shapeT.texture.width/2*scale,shapeT.texture.height/2*scale}, 0, Color{255,255,255,255});
+    for (int i = 0; i < attackList.size(); i++) {
+        DrawTextureEx(SMALL_CIRCLE, {attackList[i].position.x - SMALL_CIRCLE.width*SPRITESCALE/2,attackList[i].position.y - SMALL_CIRCLE.height*SPRITESCALE/2}, 0, SPRITESCALE, WHITE);
     }
 }
 

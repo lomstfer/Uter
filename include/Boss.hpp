@@ -12,6 +12,7 @@ public:
 
 private:
     void attack();
+    void updateAttacks();
     void mov1();
 
     Texture2D tT;
