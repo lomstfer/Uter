@@ -3,12 +3,12 @@
 Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, float scale)
 : position(position), sS(texture, numberOfFrames, scale)  {
     velocity = Vector2{0, 0};
-    collisionRect = Rectangle{position.x + 2 * sS.scale, 
-                              position.y + 1 * sS.scale, 
-                              (sS.fWidth - 2) * sS.scale, 
-                              sS.fHeight - sS.scale
+    collisionRect = Rectangle{position.x - (sS.fWidth/2 - (2)) * SPRITESCALE, 
+                              position.y - (sS.fHeight/2 - (1)) * SPRITESCALE, 
+                              (4) * SPRITESCALE, 
+                              (7) * SPRITESCALE
                               };
-    runSpeed = 900;
+    runSpeed = 900 / 5;
     jumpForce = 2300;
     gravity = 10000;
     damp = 0.000001;
@@ -88,10 +88,8 @@ void Player::update() {
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
 
-    collisionRect.x = position.x;
-    collisionRect.y = position.y;
-    if (position.y > WINH - sS.fHeight * sS.scale) {
-        position.y = WINH - sS.fHeight * sS.scale;
+    if (position.y + sS.fHeight/2 * sS.scale > WINH) {
+        position.y = WINH - sS.fHeight/2 * sS.scale;
         jumps = maxJumps;
         grounded = true;
 
@@ -105,12 +103,17 @@ void Player::update() {
         grounded = false;
     }
 
-    if (position.x + (sS.fWidth - 2) * sS.scale > WINW) {
-        position.x = WINW - (sS.fWidth - 2) * sS.scale;
+    if (position.x + (sS.fWidth/2 - 2) * SPRITESCALE > WINW) {
+        position.x = WINW - (sS.fWidth/2 - 2) * SPRITESCALE;
     }
-    if (position.x + 2 * sS.scale < 0) {
-        position.x = -2 * sS.scale;
+    if (position.x - (sS.fWidth/2 - 2) * SPRITESCALE < 0) {
+        position.x = (sS.fWidth/2 - 2) * SPRITESCALE;
     }
+
+    collisionRect = {position.x - (sS.fWidth/2 - (2)) * SPRITESCALE, 
+                    position.y - (sS.fHeight/2 - (1)) * SPRITESCALE, 
+                    (4) * SPRITESCALE, 
+                    (7) * SPRITESCALE};
 }
 
 void Player::dashMaking() {

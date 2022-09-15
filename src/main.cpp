@@ -50,11 +50,16 @@ int main()
             logTime = 0;
             Log(std::to_string(GetFrameTime() * 1000) + " ms");
         }
+
+        if (IsKeyPressed(KEY_H)) {
+            changeWindowSize(rand() % 1920, rand() % 1080);
+        }
         
-        boss.update(player.position);
+        boss.update(player);
 
         // Draw ------
         BeginDrawing();
+
         BeginTextureMode(renderTarget);
             ClearBackground(Color{0, 0, 0, 255});
         
@@ -62,17 +67,14 @@ int main()
 
             player.update();
             boss.draw();
-            
         EndTextureMode();
         DrawTexturePro(renderTarget.texture, Rectangle{0,0,float(renderTarget.texture.width),float(-renderTarget.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, WHITE);
         
         EndDrawing();
     }
 
-    
     CloseWindow();
     
-
     return 0;
 }
 

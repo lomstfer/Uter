@@ -23,5 +23,5 @@ void SpriteSheet::animate(float fps, float deltaTime) {
 
 void SpriteSheet::draw(Vector2 drawPosition) {
     dstRect = {drawPosition.x, drawPosition.y, (float)fWidth * scale, (float)texture.height * scale};
-    DrawTexturePro(texture, srcRect, dstRect, Vector2{0, 0}, 0, Color{255, 255, 255, 255});
+    DrawTexturePro(texture, srcRect, dstRect, Vector2{fWidth/2 * scale, fHeight/2 * scale}, 0, Color{255, 255, 255, 255});
 }

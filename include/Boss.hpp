@@ -3,16 +3,17 @@
 #include "Globals.hpp"
 #include <iostream>
 #include "SpriteSheet.hpp"
+#include "Player.hpp"
 
 class Boss {
 public:
     Boss(Vector2 position);
-    void update(Vector2 playerPosition);
+    void update(const Player& player);
     void draw();
 
 private:
     void attack();
-    void updateAttacks();
+    void updateAttacks(const Player& player);
     void mov1();
 
     Texture2D tT;

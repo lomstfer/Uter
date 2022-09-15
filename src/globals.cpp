@@ -1,12 +1,12 @@
 #include "Globals.hpp"
 
-int WINW = 1280;
-int WINH = 720;
+int WINW = 1920;
+int WINH = 1080;
 
 int SCREENW = 1280;
 int SCREENH = 720;
 
-float SPRITESCALE = 5;
+float SPRITESCALE = 6;
 
 int ftint(float x) {
     if (x > 0)

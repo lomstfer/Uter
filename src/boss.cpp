@@ -76,12 +76,12 @@ Boss::Boss(Vector2 position)
     
 }
 
-void Boss::update(Vector2 playerPosition) {
-    playerPos = playerPosition;
+void Boss::update(const Player& player) {
+    playerPos = player.position;
 
     attackTime += GetFrameTime();
 
-    if (attackTime >= 2) {
+    if (attackTime >= 1) {
         attackTime = 0;
         attack();
     }
@@ -141,16 +141,25 @@ void Boss::update(Vector2 playerPosition) {
     default: break;
     }
 
-    updateAttacks();
+    updateAttacks(player);
 }
 
 Boss::Attack::Attack(Vector2 position)
 : position(position) {}
 
-void Boss::updateAttacks() {
+void Boss::updateAttacks(const Player& player) {
     for (int i = 0; i < attackList.size();) {
         attackList[i].position.y += 1;
-        if (attackList[i].position.y > WINH) {
+
+        if (CheckCollisionRecs(player.collisionRect, {attackList[i].position.x-SMALL_CIRCLE.width/2*SPRITESCALE,attackList[i].position.y-SMALL_CIRCLE.height/2*SPRITESCALE,SMALL_CIRCLE.width*SPRITESCALE,SMALL_CIRCLE.height*SPRITESCALE})
+            /* attackList[i].position.y + SMALL_CIRCLE.height/2 * SPRITESCALE >= playerPos.y - PEOSTILL.height/2 * SPRITESCALE &&
+            attackList[i].position.x + SMALL_CIRCLE.width/2 * SPRITESCALE >= playerPos.x - PEOSTILL.width/2 * SPRITESCALE &&
+            attackList[i].position.x - SMALL_CIRCLE.height/2 * SPRITESCALE <= playerPos.x + PEOSTILL.width/2 * SPRITESCALE */) {
+                Log("HIT");
+                attackList.erase(attackList.begin() + i);
+            }
+
+        else if (attackList[i].position.y > WINH) {
             attackList.erase(attackList.begin() + i);
         }
         else {

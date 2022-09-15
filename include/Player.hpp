@@ -1,3 +1,6 @@
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
+
 #include "Globals.hpp"
 #include <math.h>
 #include <iostream>
@@ -9,12 +12,12 @@ public:
     void update();
     
     Vector2 position;
+    Rectangle collisionRect;
 private:
     void dashMaking();
     
     SpriteSheet sS;
     
-    Rectangle collisionRect;
     Vector2 velocity;
 
     float runSpeed;
@@ -40,3 +43,4 @@ private:
     float dashCooldownCD;
     bool just_dashed;
 };
+#endif
