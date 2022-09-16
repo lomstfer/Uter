@@ -8,7 +8,7 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, fl
                               (4) * SPRITESCALE, 
                               (7) * SPRITESCALE
                               };
-    runSpeed = 900 / 5;
+    runSpeed = 900;
     jumpForce = 2300;
     gravity = 10000;
     damp = 0.000001;

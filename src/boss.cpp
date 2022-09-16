@@ -149,7 +149,7 @@ Boss::Attack::Attack(Vector2 position)
 
 void Boss::updateAttacks(const Player& player) {
     for (int i = 0; i < attackList.size();) {
-        attackList[i].position.y += 1;
+        attackList[i].position.y += 100 * GetFrameTime();
 
         if (CheckCollisionRecs(player.collisionRect, {attackList[i].position.x-SMALL_CIRCLE.width/2*SPRITESCALE,attackList[i].position.y-SMALL_CIRCLE.height/2*SPRITESCALE,SMALL_CIRCLE.width*SPRITESCALE,SMALL_CIRCLE.height*SPRITESCALE})
             /* attackList[i].position.y + SMALL_CIRCLE.height/2 * SPRITESCALE >= playerPos.y - PEOSTILL.height/2 * SPRITESCALE &&

@@ -12,7 +12,7 @@ int main()
 {
     InitWindow(SCREENW, SCREENH, "Uter");
     loadTextures();
-    SetTargetFPS(144);
+    SetTargetFPS(60);
     Image icon = LoadImageFromTexture(PEOSTILL);
     SetWindowIcon(icon);
     //SetWindowState(FLAG_FULLSCREEN_MODE);
