@@ -75,11 +75,11 @@ void Player::update() {
         }
     }
     
-    if (IsKeyDown(KEY_UP) && jumps > 0) {
+    if (IsKeyDown(KEY_SPACE) && jumps > 0) {
         velocity.y = -jumpForce;
         jumps -= 1;
     }
-    if (IsKeyReleased(KEY_UP)) {
+    if (IsKeyReleased(KEY_SPACE)) {
         jumps = 0;
     }
 

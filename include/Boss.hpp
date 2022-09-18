@@ -7,17 +7,24 @@
 
 class Boss {
 public:
-    Boss(Vector2 position);
+    Boss(int difficulty);
     void update(const Player& player);
     void draw();
 
+    void looseHealth(float amount);
+    bool killed;
 private:
     void attack();
     void updateAttacks(const Player& player);
     void mov1();
 
-    Texture2D tT;
-    SpriteSheet SS;
+    int difficulty;
+    float time;
+
+    float health;
+    float maxHealth;
+    Rectangle healthRect;
+
     float rotation;
     float rotationSpeed;
     float rotationSpeedMax;
@@ -26,10 +33,9 @@ private:
     Vector2 position;
     Rectangle collisionRect;
     Vector2 velocity;
+    float movSysTime;
 
     int movementSystem;
-
-    int difficulty;
 
     Vector2 playerPos;
 
@@ -48,8 +54,9 @@ private:
 
     class Attack {
     public:
-        Attack(Vector2 position);
+        Attack(Vector2 position, Vector2 velocity);
         Vector2 position;
+        Vector2 velocity;
     };
     std::vector<Attack> attackList;
     float attackTime;

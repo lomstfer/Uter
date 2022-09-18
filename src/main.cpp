@@ -5,9 +5,6 @@
 #include "Player.hpp"
 #include "Boss.hpp"
 
-
-#define Log(x) std::cout << x << std::endl;
-
 int main()
 {
     InitWindow(SCREENW, SCREENH, "Uter");
@@ -16,24 +13,31 @@ int main()
     Image icon = LoadImageFromTexture(PEOSTILL);
     SetWindowIcon(icon);
     //SetWindowState(FLAG_FULLSCREEN_MODE);
-
-    RenderTexture2D renderTarget = LoadRenderTexture(WINW, WINH);
-
     float logTime = 0;
 
-    Player player = Player(Vector2{WINW/2.0f - PEOSTILL.width/2, 10}, PEOSS, 4, SPRITESCALE);
+    int difficulty = 1; // load difficulty
+    
+    RenderTexture2D renderTarget = LoadRenderTexture(WINW, WINH);
 
-    Boss boss = Boss(Vector2{WINW/2.f, WINH/7});
+    Player player = Player(Vector2{WINW/2.0f - PEOSTILL.width/2, WINH}, PEOSS, 4, SPRITESCALE);
+
+    Boss boss = Boss(difficulty);
 
     Image backgroundImg = GenImageColor(WINW/SPRITESCALE, WINH/SPRITESCALE, BLANK);
 
     for (int i = 0; i <= WINW; i++) {
         for (int j = 0; j <= WINH; j++) {
-            ImageDrawPixel(&backgroundImg, i, j, Color{(unsigned char)(GetRandomValue(0, 20)), (unsigned char)(GetRandomValue(0, 20)), (unsigned char)(GetRandomValue(0, 20)), 255});
+            ImageDrawPixel(&backgroundImg, i, j, Color{(unsigned char)(GetRandomValue(0, 50)), (unsigned char)(GetRandomValue(0, 50)), (unsigned char)(GetRandomValue(0, 50)), 255});
         }
     }
 
     Texture2D backgroundTexture = LoadTextureFromImage(backgroundImg);
+
+    enum gameStates {
+        MENU,
+        PLAYING
+    };
+    int gameState = MENU;
 
     float dt;
     //SetExitKey(KEY_NULL);
@@ -55,22 +59,42 @@ int main()
             changeWindowSize(rand() % 1920, rand() % 1080);
         }
         
-        boss.update(player);
+        switch (gameState) 
+        {
+            case MENU:
+                if (IsKeyPressed(KEY_ENTER)) {
+                    gameState = PLAYING;
+                }
+                BeginDrawing();
+                    ClearBackground(Color{0, 0, 0, 255});
+                EndDrawing();
+            break;
 
-        // Draw ------
-        BeginDrawing();
+            case PLAYING:
+                boss.update(player);
+                if (boss.killed) {
+                    boss = Boss(difficulty + 1);
+                    boss.update(player);
+                }
+                // Draw ------
+                BeginDrawing();
 
-        BeginTextureMode(renderTarget);
-            ClearBackground(Color{0, 0, 0, 255});
+                BeginTextureMode(renderTarget);
+                    ClearBackground(Color{0, 0, 0, 255});
+                
+                    DrawTextureEx(backgroundTexture, Vector2{0, 0}, 0, SPRITESCALE, Color{255, 255, 255, 255});
+
+                    player.update();
+                    boss.draw();
+                EndTextureMode();
+                DrawTexturePro(renderTarget.texture, Rectangle{0,0,float(renderTarget.texture.width),float(-renderTarget.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, WHITE);
+                
+                EndDrawing();
+            break;
+        }
         
-            DrawTextureEx(backgroundTexture, Vector2{0, 0}, 0, SPRITESCALE, Color{255, 255, 255, 255});
 
-            player.update();
-            boss.draw();
-        EndTextureMode();
-        DrawTexturePro(renderTarget.texture, Rectangle{0,0,float(renderTarget.texture.width),float(-renderTarget.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, WHITE);
         
-        EndDrawing();
     }
 
     CloseWindow();

@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "label": "compile",
+    "command": "g++",
+    "args": [
+        "-g",
+        "src/main.cpp",
+        "src/player.cpp",
+        "src/spriteSheet.cpp",
+        "src/globals.cpp",
+        "src/boss.cpp",
+        "build/extra_rice.o",
+        "-I",
+        "include/",
+        "-L",
+        "lib",
+        "-lraylib",
+        "-lopengl32",
+        "-lgdi32",
+        "-lwinmm",
+        "-Wno-narrowing",
+        "-O2",
+        "-Wall",
+        "-Wno-missing-braces",
+        "-o",
+        "build/a.exe"
+    ],
+    "group": {
+        "kind": "build",
+        "isDefault": true
+    },
+}
