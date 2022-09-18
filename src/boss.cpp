@@ -27,7 +27,7 @@ Boss::Boss(int difficulty)
 
     health = 100;
     maxHealth = health;
-    healthRect = {0, 0, health/maxHealth * WINW, 10};
+    healthRect = {0, 0, health/maxHealth * WINW, 1.66f * SPRITESCALE};
     killed = false;
 
     position = {WINW/2, -WINH/5};
@@ -88,13 +88,19 @@ void Boss::update(const Player& player) {
     if (movementSystem > 0)
         attackTime += GetFrameTime();
 
-    if (IsKeyDown(KEY_L)) {
-        looseHealth(5);
+    if (IsKeyPressed(KEY_L)) {
+        looseHealth(99);
+    }
+
+    if (healthRect.height > 1.66f * SPRITESCALE) {
+        healthRect.height -= healthRect.height * 5.f * GetFrameTime();
+        if (healthRect.height < 1.66f * SPRITESCALE) {
+            healthRect.height = 1.66f * SPRITESCALE;
+        }
     }
 
     if (attackTime >= 1 / (float)difficulty * 4) {
         attackTime = 0;
-        
         attack();
     }
 
@@ -210,6 +216,7 @@ void Boss::updateAttacks(const Player& player) {
 
 void Boss::looseHealth(float amount) {
     health -= amount;
+    healthRect.height *= 2.f + amount/6.f;
     if (health <= 0) {
         killed = true;
     }
