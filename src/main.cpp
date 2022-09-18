@@ -9,13 +9,16 @@ int main()
 {
     InitWindow(SCREENW, SCREENH, "Uter");
     loadTextures();
-    SetTargetFPS(60);
+    SetTargetFPS(144);
     Image icon = LoadImageFromTexture(PEOSTILL);
     SetWindowIcon(icon);
     //SetWindowState(FLAG_FULLSCREEN_MODE);
     float logTime = 0;
 
     int difficulty = 1; // load difficulty
+
+    float inBetweenTime = 0;
+    float inBetweenMax = 5;
     
     RenderTexture2D renderTarget = LoadRenderTexture(WINW, WINH);
 
@@ -71,11 +74,17 @@ int main()
             break;
 
             case PLAYING:
-                boss.update(player);
                 if (boss.killed) {
-                    boss = Boss(difficulty + 1);
+                    inBetweenTime += dt;
+                    boss.die();
                     boss.update(player);
+                    if (inBetweenTime >= inBetweenMax) {
+                        inBetweenTime = 0;
+                        boss = Boss(difficulty + 1);
+                    }
                 }
+                boss.update(player);
+                    
                 // Draw ------
                 BeginDrawing();
 

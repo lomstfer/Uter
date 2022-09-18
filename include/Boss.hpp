@@ -13,6 +13,8 @@ public:
 
     void looseHealth(float amount);
     bool killed;
+
+    void die();
 private:
     void attack();
     void updateAttacks(const Player& player);
@@ -24,6 +26,7 @@ private:
     float health;
     float maxHealth;
     Rectangle healthRect;
+    float healthWStore;
 
     float rotation;
     float rotationSpeed;
@@ -51,6 +54,8 @@ private:
     Vector2 p5e;
 
     RenderTexture2D shapeT;
+
+    float alphaOnStuff = 255;
 
     class Attack {
     public:

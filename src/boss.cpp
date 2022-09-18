@@ -28,6 +28,7 @@ Boss::Boss(int difficulty)
     health = 100;
     maxHealth = health;
     healthRect = {0, 0, health/maxHealth * WINW, 1.66f * SPRITESCALE};
+    healthWStore = healthRect.width;
     killed = false;
 
     position = {WINW/2, -WINH/5};
@@ -89,14 +90,18 @@ void Boss::update(const Player& player) {
         attackTime += GetFrameTime();
 
     if (IsKeyPressed(KEY_L)) {
-        looseHealth(99);
+        looseHealth(3);
     }
 
     if (healthRect.height > 1.66f * SPRITESCALE) {
         healthRect.height -= healthRect.height * 5.f * GetFrameTime();
-        if (healthRect.height < 1.66f * SPRITESCALE) {
+        if (healthRect.height < 1.66f * SPRITESCALE)
             healthRect.height = 1.66f * SPRITESCALE;
-        }
+    }
+    if (healthRect.width > healthWStore) {
+        healthRect.width -= (healthRect.width - healthWStore) * 10.f * GetFrameTime();
+        if (healthRect.width < healthWStore)
+            healthRect.width = healthWStore;
     }
 
     if (attackTime >= 1 / (float)difficulty * 4) {
@@ -136,10 +141,10 @@ void Boss::update(const Player& player) {
 
         BeginTextureMode(shapeT);
             ClearBackground(Color{0, 0, 0, 0});
-            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,WHITE);
-            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,WHITE);
-            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,WHITE);
-            DrawLine(p4s.x,p4s.y,p4e.x,p4e.y,WHITE);
+            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,{255,255,255,alphaOnStuff});
+            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,{255,255,255,alphaOnStuff});
+            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,{255,255,255,alphaOnStuff});
+            DrawLine(p4s.x,p4s.y,p4e.x,p4e.y,{255,255,255,alphaOnStuff});
         EndTextureMode();
     break;
 
@@ -157,9 +162,9 @@ void Boss::update(const Player& player) {
         BeginTextureMode(shapeT);
             ClearBackground(Color{0, 0, 0, 0});
             
-            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,WHITE);
-            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,WHITE);
-            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,WHITE);
+            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,{255,255,255,alphaOnStuff});
+            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,{255,255,255,alphaOnStuff});
+            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,{255,255,255,alphaOnStuff});
         EndTextureMode();
     
     default: break;
@@ -171,7 +176,7 @@ void Boss::update(const Player& player) {
 void Boss::draw() {
     DrawTexturePro(shapeT.texture, {0,0,shapeT.texture.width,-shapeT.texture.height}, {position.x,position.y,shapeT.texture.width*scale,shapeT.texture.height*scale}, Vector2{shapeT.texture.width/2*scale,shapeT.texture.height/2*scale}, 0, Color{255,255,255,255});
     for (int i = 0; i < attackList.size(); i++) {
-        DrawTextureEx(SMALL_CIRCLE, {attackList[i].position.x - SMALL_CIRCLE.width*SPRITESCALE/2,attackList[i].position.y - SMALL_CIRCLE.height*SPRITESCALE/2}, 0, SPRITESCALE, WHITE);
+        DrawTextureEx(SMALL_CIRCLE, {attackList[i].position.x - SMALL_CIRCLE.width*SPRITESCALE/2,attackList[i].position.y - SMALL_CIRCLE.height*SPRITESCALE/2}, 0, SPRITESCALE, {255,255,255,alphaOnStuff});
     }
 
     DrawRectangle(healthRect.x, healthRect.y, healthRect.width, healthRect.height, RED);
@@ -205,7 +210,7 @@ void Boss::updateAttacks(const Player& player) {
         if (CheckCollisionRecs(player.collisionRect, {attackList[i].position.x-SMALL_CIRCLE.width/2*SPRITESCALE,attackList[i].position.y-SMALL_CIRCLE.height/2*SPRITESCALE,SMALL_CIRCLE.width*SPRITESCALE,SMALL_CIRCLE.height*SPRITESCALE})) {                
             attackList.erase(attackList.begin() + i);
         }
-        else if (attackList[i].position.y > WINH) {
+        else if (attackList[i].position.y > WINH + 100) {
             attackList.erase(attackList.begin() + i);
         }
         else {
@@ -216,12 +221,20 @@ void Boss::updateAttacks(const Player& player) {
 
 void Boss::looseHealth(float amount) {
     health -= amount;
-    healthRect.height *= 2.f + amount/6.f;
+    healthRect.height *= 1.5f + amount/6.f;
     if (health <= 0) {
         killed = true;
     }
+    healthWStore = health/maxHealth * WINW;
+}
 
-    healthRect.width = health/maxHealth * WINW;
+void Boss::die() {
+    alphaOnStuff -= 100.f * GetFrameTime();
+    if (alphaOnStuff < 0) {
+        alphaOnStuff = 0;
+    }
+    velocity.x *= pow(0.001,GetFrameTime());
+    velocity.y *= pow(0.001,GetFrameTime());
 }
 
 void Boss::mov1() {

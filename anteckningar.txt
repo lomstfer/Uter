@@ -19,5 +19,5 @@ Boy sling shot (Peo)
 
 Woman bow and arrow (Menskin)
     * Medium damage
-    * Can heal herself somehow
+    * Can heal herself somehow with nature stuff
     * Roll ability
