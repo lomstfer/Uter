@@ -13,6 +13,7 @@ public:
 
     void looseHealth(float amount);
     bool killed;
+    bool killedPlayer = false;
 
     void die();
 private:

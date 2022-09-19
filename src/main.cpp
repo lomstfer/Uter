@@ -67,13 +67,21 @@ int main()
             case MENU:
                 if (IsKeyPressed(KEY_ENTER)) {
                     gameState = PLAYING;
+                    difficulty = 1;
                 }
                 BeginDrawing();
-                    ClearBackground(Color{0, 0, 0, 255});
+                    ClearBackground(Color{100, 0, 0, 255});
                 EndDrawing();
             break;
 
             case PLAYING:
+                if (boss.killedPlayer) {
+                    player.dead = true;
+                    gameState = MENU;
+                    player.~Player();
+                    Player player = Player(Vector2{WINW/2.0f - PEOSTILL.width/2, WINH}, PEOSS, 4, SPRITESCALE);
+                    boss = Boss(difficulty);
+                }
                 if (boss.killed) {
                     inBetweenTime += dt;
                     boss.die();

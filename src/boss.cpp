@@ -196,7 +196,7 @@ void Boss::updateAttacks(const Player& player) {
         if (abs(attackList[i].position.x - player.position.x) > 50)
         {
             if (attackList[i].position.x - player.position.x < 0) {
-            attackList[i].velocity.x -= 10.f/(attackList[i].position.x - player.position.x) * 100.f;
+                attackList[i].velocity.x -= 10.f/(attackList[i].position.x - player.position.x) * 100.f;
             }
             if (attackList[i].position.x - player.position.x > 0) {
                 attackList[i].velocity.x -= 10.f/(attackList[i].position.x - player.position.x) * 100.f;
@@ -209,6 +209,7 @@ void Boss::updateAttacks(const Player& player) {
 
         if (CheckCollisionRecs(player.collisionRect, {attackList[i].position.x-SMALL_CIRCLE.width/2*SPRITESCALE,attackList[i].position.y-SMALL_CIRCLE.height/2*SPRITESCALE,SMALL_CIRCLE.width*SPRITESCALE,SMALL_CIRCLE.height*SPRITESCALE})) {                
             attackList.erase(attackList.begin() + i);
+            killedPlayer = true;
         }
         else if (attackList[i].position.y > WINH + 100) {
             attackList.erase(attackList.begin() + i);
