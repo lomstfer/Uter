@@ -11,6 +11,9 @@ public:
     Player(Vector2 position, Texture2D texture, const int numberOfFrames, float scale);
     void update();
     
+    bool dead = false;
+
+    
     Vector2 position;
     Rectangle collisionRect;
 private:
