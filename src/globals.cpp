@@ -3,8 +3,8 @@
 int WINW = 1920;
 int WINH = 1080;
 
-int SCREENW = 1920;
-int SCREENH = 1080;
+int SCREENW = 640;
+int SCREENH = 360;
 
 float SPRITESCALE = 6;
 

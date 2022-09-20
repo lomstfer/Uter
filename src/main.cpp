@@ -12,7 +12,7 @@ int main()
     SetTargetFPS(60);
     Image icon = LoadImageFromTexture(PEOSTILL);
     SetWindowIcon(icon);
-    SetWindowState(FLAG_FULLSCREEN_MODE);
+    //SetWindowState(FLAG_FULLSCREEN_MODE);
     float logTime = 0;
 
     int difficulty = 1; // load difficulty

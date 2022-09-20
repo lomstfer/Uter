@@ -90,7 +90,7 @@ void Boss::update(const Player& player) {
         attackTime += GetFrameTime();
 
     if (IsKeyPressed(KEY_L)) {
-        looseHealth(3);
+        looseHealth(20);
     }
 
     if (healthRect.height > 1.66f * SPRITESCALE) {
@@ -141,10 +141,10 @@ void Boss::update(const Player& player) {
 
         BeginTextureMode(shapeT);
             ClearBackground(Color{0, 0, 0, 0});
-            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,{255,255,255,alphaOnStuff});
-            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,{255,255,255,alphaOnStuff});
-            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,{255,255,255,alphaOnStuff});
-            DrawLine(p4s.x,p4s.y,p4e.x,p4e.y,{255,255,255,alphaOnStuff});
+            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,{255,255,255,alphaOnBoss});
+            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,{255,255,255,alphaOnBoss});
+            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,{255,255,255,alphaOnBoss});
+            DrawLine(p4s.x,p4s.y,p4e.x,p4e.y,{255,255,255,alphaOnBoss});
         EndTextureMode();
     break;
 
@@ -162,9 +162,9 @@ void Boss::update(const Player& player) {
         BeginTextureMode(shapeT);
             ClearBackground(Color{0, 0, 0, 0});
             
-            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,{255,255,255,alphaOnStuff});
-            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,{255,255,255,alphaOnStuff});
-            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,{255,255,255,alphaOnStuff});
+            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,{255,255,255,alphaOnBoss});
+            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,{255,255,255,alphaOnBoss});
+            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,{255,255,255,alphaOnBoss});
         EndTextureMode();
     
     default: break;
@@ -176,7 +176,7 @@ void Boss::update(const Player& player) {
 void Boss::draw() {
     DrawTexturePro(shapeT.texture, {0,0,shapeT.texture.width,-shapeT.texture.height}, {position.x,position.y,shapeT.texture.width*scale,shapeT.texture.height*scale}, Vector2{shapeT.texture.width/2*scale,shapeT.texture.height/2*scale}, 0, Color{255,255,255,255});
     for (int i = 0; i < attackList.size(); i++) {
-        DrawTextureEx(SMALL_CIRCLE, {attackList[i].position.x - SMALL_CIRCLE.width*SPRITESCALE/2,attackList[i].position.y - SMALL_CIRCLE.height*SPRITESCALE/2}, 0, SPRITESCALE, {255,255,255,alphaOnStuff});
+        DrawTextureEx(SMALL_CIRCLE, {attackList[i].position.x - SMALL_CIRCLE.width*SPRITESCALE/2,attackList[i].position.y - SMALL_CIRCLE.height*SPRITESCALE/2}, 0, SPRITESCALE, {255,255,255,alphaOnAttacks});
     }
 
     DrawRectangle(healthRect.x, healthRect.y, healthRect.width, healthRect.height, RED);
@@ -202,7 +202,11 @@ void Boss::updateAttacks(const Player& player) {
                 attackList[i].velocity.x -= 10.f/(attackList[i].position.x - player.position.x) * 100.f;
             }
         }
-        //attackList[i].velocity.x += -(attackList[i].position.x - player.position.x) / 100.f;
+        if (killed) {
+            velocity.x = 0;
+            Log("i1");
+            velocity.y += 100.f * GetFrameTime();
+        }
         
         attackList[i].position.y += attackList[i].velocity.y * GetFrameTime();
         attackList[i].position.x += attackList[i].velocity.x * GetFrameTime();
@@ -230,12 +234,13 @@ void Boss::looseHealth(float amount) {
 }
 
 void Boss::die() {
-    alphaOnStuff -= 100.f * GetFrameTime();
-    if (alphaOnStuff < 0) {
-        alphaOnStuff = 0;
+    alphaOnBoss -= 100.f * GetFrameTime();
+    if (alphaOnBoss < 0) {
+        alphaOnBoss = 0;
     }
-    velocity.x *= pow(0.001,GetFrameTime());
-    velocity.y *= pow(0.001,GetFrameTime());
+    velocity.x *= pow(0.00001,GetFrameTime());
+    velocity.y *= pow(0.00001,GetFrameTime());
+    rotationSpeed = 0;
 }
 
 void Boss::mov1() {

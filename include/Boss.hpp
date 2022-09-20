@@ -56,7 +56,8 @@ private:
 
     RenderTexture2D shapeT;
 
-    float alphaOnStuff = 255;
+    float alphaOnBoss = 255;
+    float alphaOnAttacks = 255;
 
     class Attack {
     public:
