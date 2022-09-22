@@ -15,7 +15,7 @@ int main()
     //SetWindowState(FLAG_FULLSCREEN_MODE);
     float logTime = 0;
 
-    int difficulty = 1; // load difficulty
+    int difficulty = 100; // load difficulty
 
     float inBetweenTime = 0;
     float inBetweenMax = 5;

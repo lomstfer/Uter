@@ -106,7 +106,8 @@ void Boss::update(const Player& player) {
 
     if (attackTime >= 1 / (float)difficulty * 4) {
         attackTime = 0;
-        attack();
+        if (!killed)
+            attack();
     }
 
     switch (movementSystem)
@@ -192,7 +193,7 @@ Boss::Attack::Attack(Vector2 position, Vector2 velocity)
 
 void Boss::updateAttacks(const Player& player) {
     for (int i = 0; i < attackList.size();) {
-        attackList[i].velocity.y = 100;
+        
         if (abs(attackList[i].position.x - player.position.x) > 50)
         {
             if (attackList[i].position.x - player.position.x < 0) {
@@ -203,10 +204,19 @@ void Boss::updateAttacks(const Player& player) {
             }
         }
         if (killed) {
-            velocity.x = 0;
+            attackList[i].velocity.x = 0;
             Log("i1");
-            velocity.y += 100.f * GetFrameTime();
+            attackList[i].velocity.y += 50.f * GetFrameTime();
+            if (attackList[i].position.y > WINH - 10)
+                alphaOnAttacks -= 200 * GetFrameTime();
+                if (alphaOnAttacks < 0) {
+                    alphaOnAttacks = 0;
+                }
         }
+        else {
+            attackList[i].velocity.y = 100;
+        }
+        Log(attackList[i].velocity.x);
         
         attackList[i].position.y += attackList[i].velocity.y * GetFrameTime();
         attackList[i].position.x += attackList[i].velocity.x * GetFrameTime();
