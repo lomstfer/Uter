@@ -205,10 +205,9 @@ void Boss::updateAttacks(const Player& player) {
         }
         if (killed) {
             attackList[i].velocity.x = 0;
-            Log("i1");
             attackList[i].velocity.y += 50.f * GetFrameTime();
-            if (attackList[i].position.y > WINH - 10)
-                alphaOnAttacks -= 200 * GetFrameTime();
+            if (attackList[i].position.y > WINH - 100)
+                alphaOnAttacks -= 60 * GetFrameTime();
                 if (alphaOnAttacks < 0) {
                     alphaOnAttacks = 0;
                 }
@@ -216,7 +215,6 @@ void Boss::updateAttacks(const Player& player) {
         else {
             attackList[i].velocity.y = 100;
         }
-        Log(attackList[i].velocity.x);
         
         attackList[i].position.y += attackList[i].velocity.y * GetFrameTime();
         attackList[i].position.x += attackList[i].velocity.x * GetFrameTime();

@@ -19,8 +19,11 @@ int main()
 
     float inBetweenTime = 0;
     float inBetweenMax = 5;
+
+    Font font = LoadFont("build/assets/caveat.ttf");
     
     RenderTexture2D renderTarget = LoadRenderTexture(WINW, WINH);
+    RenderTexture2D renderTargetPaused = LoadRenderTexture(WINW, WINH);
 
     Player player = Player(Vector2{WINW/2.0f - PEOSTILL.width/2, WINH}, PEOSS, 4, SPRITESCALE);
 
@@ -38,12 +41,13 @@ int main()
 
     enum gameStates {
         MENU,
-        PLAYING
+        PLAYING,
+        PAUSED
     };
     int gameState = MENU;
 
     float dt;
-    //SetExitKey(KEY_NULL);
+    SetExitKey(KEY_NULL);
     bool running = true;
     while (running) 
     {
@@ -75,6 +79,9 @@ int main()
             break;
 
             case PLAYING:
+                if (IsKeyPressed(KEY_ESCAPE)) {
+                    gameState = PAUSED;
+                }
                 if (boss.killedPlayer) {
                     player.dead = true;
                     gameState = MENU;
@@ -100,7 +107,6 @@ int main()
                     ClearBackground(Color{0, 0, 0, 255});
                 
                     DrawTextureEx(backgroundTexture, Vector2{0, 0}, 0, SPRITESCALE, Color{255, 255, 255, 255});
-
                     player.update();
                     boss.draw();
                 EndTextureMode();
@@ -108,14 +114,26 @@ int main()
                 
                 EndDrawing();
             break;
-        }
-        
 
-        
+            case PAUSED:
+                if (IsKeyPressed(KEY_ESCAPE)) {
+                    gameState = PLAYING;
+                }
+                BeginDrawing();
+                BeginTextureMode(renderTargetPaused);
+                    ClearBackground({0,0,0,0});
+                    DrawTextEx(font, "paused", {0,0}, 100, 10, WHITE);
+                EndTextureMode();
+                DrawTexturePro(renderTarget.texture, Rectangle{0,0,float(renderTarget.texture.width),float(-renderTarget.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, {100,100,100,255});
+                DrawTexturePro(renderTargetPaused.texture, Rectangle{0,0,float(renderTargetPaused.texture.width),float(-renderTargetPaused.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, {255,255,255,255});
+                EndDrawing();
+            break;
+        }
+    
     }
 
     CloseWindow();
-    
+    UnloadFont(font);
     return 0;
 }
 
