@@ -25,7 +25,7 @@ Boss::Boss(int difficulty)
 
     scale = SPRITESCALE;
 
-    health = 100;
+    health = 100 + difficulty * 10;
     maxHealth = health;
     healthRect = {0, 0, health/maxHealth * WINW, 1.66f * SPRITESCALE};
     healthWStore = healthRect.width;
@@ -90,7 +90,7 @@ void Boss::update(const Player& player) {
         attackTime += GetFrameTime();
 
     if (IsKeyPressed(KEY_L)) {
-        looseHealth(20);
+        looseHealth(5);
     }
 
     if (healthRect.height > 1.66f * SPRITESCALE) {
@@ -177,7 +177,7 @@ void Boss::update(const Player& player) {
 void Boss::draw() {
     DrawTexturePro(shapeT.texture, {0,0,shapeT.texture.width,-shapeT.texture.height}, {position.x,position.y,shapeT.texture.width*scale,shapeT.texture.height*scale}, Vector2{shapeT.texture.width/2*scale,shapeT.texture.height/2*scale}, 0, Color{255,255,255,255});
     for (int i = 0; i < attackList.size(); i++) {
-        DrawTextureEx(SMALL_CIRCLE, {attackList[i].position.x - SMALL_CIRCLE.width*SPRITESCALE/2,attackList[i].position.y - SMALL_CIRCLE.height*SPRITESCALE/2}, 0, SPRITESCALE, {255,255,255,alphaOnAttacks});
+        DrawTextureEx(SMALL_CIRCLE, {attackList[i].position.x - SMALL_CIRCLE.width*SPRITESCALE/2,attackList[i].position.y - SMALL_CIRCLE.height*SPRITESCALE/2}, 0, SPRITESCALE, {255,255,255,attackList[i].alpha});
     }
 
     DrawRectangle(healthRect.x, healthRect.y, healthRect.width, healthRect.height, RED);
@@ -193,7 +193,6 @@ Boss::Attack::Attack(Vector2 position, Vector2 velocity)
 
 void Boss::updateAttacks(const Player& player) {
     for (int i = 0; i < attackList.size();) {
-        
         if (abs(attackList[i].position.x - player.position.x) > 50)
         {
             if (attackList[i].position.x - player.position.x < 0) {
@@ -205,25 +204,24 @@ void Boss::updateAttacks(const Player& player) {
         }
         if (killed) {
             attackList[i].velocity.x = 0;
-            attackList[i].velocity.y += 50.f * GetFrameTime();
-            if (attackList[i].position.y > WINH - 100)
-                alphaOnAttacks -= 60 * GetFrameTime();
-                if (alphaOnAttacks < 0) {
-                    alphaOnAttacks = 0;
-                }
+            attackList[i].velocity.y += attackList[i].position.y / 5.f * GetFrameTime();
+            attackList[i].alpha -= attackList[i].position.y / 5.f * GetFrameTime();
+            if (attackList[i].alpha < 0) 
+                attackList[i].alpha = 0;
         }
         else {
-            attackList[i].velocity.y = 100;
+            attackList[i].velocity.y += 100 * GetFrameTime();
         }
         
         attackList[i].position.y += attackList[i].velocity.y * GetFrameTime();
         attackList[i].position.x += attackList[i].velocity.x * GetFrameTime();
 
-        if (CheckCollisionRecs(player.collisionRect, {attackList[i].position.x-SMALL_CIRCLE.width/2*SPRITESCALE,attackList[i].position.y-SMALL_CIRCLE.height/2*SPRITESCALE,SMALL_CIRCLE.width*SPRITESCALE,SMALL_CIRCLE.height*SPRITESCALE})) {                
+        if (CheckCollisionRecs(player.collisionRect, {attackList[i].position.x-SMALL_CIRCLE.width/2*SPRITESCALE,attackList[i].position.y-SMALL_CIRCLE.height/2*SPRITESCALE,SMALL_CIRCLE.width*SPRITESCALE,SMALL_CIRCLE.height*SPRITESCALE})
+               && attackList[i].alpha >= 255) {                
             attackList.erase(attackList.begin() + i);
             killedPlayer = true;
         }
-        else if (attackList[i].position.y > WINH + 100) {
+        else  if (attackList[i].position.y > WINH + 100 || attackList[i].alpha <= 0) {
             attackList.erase(attackList.begin() + i);
         }
         else {

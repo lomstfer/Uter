@@ -8,11 +8,11 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, fl
                               (4) * SPRITESCALE, 
                               (7) * SPRITESCALE
                               };
-    runSpeed = 900;
+    runSpeed = 8000;
     jumpForce = 2300;
     gravity = 10000;
     damp = 0.000001;
-    airDamp = 0.01;
+    airDamp = 0.001;
     jumps = 1;
     maxJumps = jumps;
     grounded = true;
@@ -20,7 +20,7 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, fl
     // dash
     dashCooldownCD = 0.5;
     pressAgainTimeCD = 0.5;
-    dashForce = 3300;
+    dashForce = 5000;
     dashTimeCD = 0.2;
 
     dashing = false;
@@ -67,11 +67,11 @@ void Player::update() {
     
     if (!dashing) {
         if (IsKeyDown(KEY_A)) {
-            velocity.x = -runSpeed;
+            velocity.x += -runSpeed * dt;
         }
 
         if (IsKeyDown(KEY_D)) {
-            velocity.x = runSpeed;
+            velocity.x += runSpeed * dt;
         }
     }
     

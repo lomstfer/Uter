@@ -9,13 +9,13 @@ int main()
 {
     InitWindow(SCREENW, SCREENH, "Uter");
     loadTextures();
-    SetTargetFPS(60);
+    SetTargetFPS(144);
     Image icon = LoadImageFromTexture(PEOSTILL);
     SetWindowIcon(icon);
     //SetWindowState(FLAG_FULLSCREEN_MODE);
     float logTime = 0;
 
-    int difficulty = 100; // load difficulty
+    int difficulty = 1; // load difficulty
 
     float inBetweenTime = 0;
     float inBetweenMax = 5;
@@ -107,6 +107,7 @@ int main()
                     ClearBackground(Color{0, 0, 0, 255});
                 
                     DrawTextureEx(backgroundTexture, Vector2{0, 0}, 0, SPRITESCALE, Color{255, 255, 255, 255});
+
                     player.update();
                     boss.draw();
                 EndTextureMode();
@@ -118,6 +119,9 @@ int main()
             case PAUSED:
                 if (IsKeyPressed(KEY_ESCAPE)) {
                     gameState = PLAYING;
+                }
+                if (IsKeyPressed(KEY_O)) {
+                    running = false;
                 }
                 BeginDrawing();
                 BeginTextureMode(renderTargetPaused);

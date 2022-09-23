@@ -64,6 +64,7 @@ private:
         Attack(Vector2 position, Vector2 velocity);
         Vector2 position;
         Vector2 velocity;
+        float alpha = 255;
     };
     std::vector<Attack> attackList;
     float attackTime;
