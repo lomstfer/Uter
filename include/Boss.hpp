@@ -15,6 +15,9 @@ public:
     bool killed;
     bool killedPlayer = false;
 
+    Vector2 position;
+
+
     void die();
 private:
     void attack();
@@ -34,7 +37,6 @@ private:
     float rotationSpeedMax;
     int shape;
     int scale;
-    Vector2 position;
     Rectangle collisionRect;
     Vector2 velocity;
     float movSysTime;

@@ -33,7 +33,9 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, fl
     just_dashed = false;
 }
 
-void Player::update() {
+Player::Attack::Attack
+
+void Player::update(Vector2 boss_position) {
     float dt = GetFrameTime();
 
     velocity.y += gravity * dt;
@@ -43,7 +45,6 @@ void Player::update() {
     else {
         velocity.x *= pow(airDamp, dt);
     }
-        
 
     if (abs(velocity.x) < 5) {
         velocity.x = 0;
@@ -114,6 +115,15 @@ void Player::update() {
                     position.y - (sS.fHeight/2 - (1)) * SPRITESCALE, 
                     (4) * SPRITESCALE, 
                     (7) * SPRITESCALE};
+    
+    attackTime += dt;
+    if (attackTime >= attackNow) {
+        attacks.emplace_back(position, Vector2{boss_position.x - position.x, 100.f});
+    }
+
+    for (int i = 0; i < attacks.size(); i++) {
+        DrawRectangle(attacks[i].position.x, attacks[i].position.y, 10, 10, WHITE);
+    }
 }
 
 void Player::dashMaking() {
