@@ -33,9 +33,10 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, fl
     just_dashed = false;
 }
 
-Player::Attack::Attack
+Player::Attack::Attack(Vector2 position, Vector2 velocity)
+: velocity(velocity), position(position) {}
 
-void Player::update(Vector2 boss_position) {
+void Player::update() {
     float dt = GetFrameTime();
 
     velocity.y += gravity * dt;
@@ -115,14 +116,32 @@ void Player::update(Vector2 boss_position) {
                     position.y - (sS.fHeight/2 - (1)) * SPRITESCALE, 
                     (4) * SPRITESCALE, 
                     (7) * SPRITESCALE};
-    
+}
+
+void Player::updateAttacks(Vector2 boss_position) {
+    float dt = GetFrameTime();
     attackTime += dt;
     if (attackTime >= attackNow) {
-        attacks.emplace_back(position, Vector2{boss_position.x - position.x, 100.f});
+        attackTime = 0;
+        float d = sqrt(pow(boss_position.x - position.x,2) + pow(boss_position.y - position.y,2));
+        attacks.emplace_back(position, Vector2{(boss_position.x - position.x)/d * 600.f, (boss_position.y - position.y)/d * 600.f});
     }
 
-    for (int i = 0; i < attacks.size(); i++) {
-        DrawRectangle(attacks[i].position.x, attacks[i].position.y, 10, 10, WHITE);
+    for (int i = 0; i < attacks.size();) {
+        attacks[i].velocity.y += 100.f * dt;
+        attacks[i].position.x += attacks[i].velocity.x * dt;
+        attacks[i].position.y += attacks[i].velocity.y * dt;
+        DrawRectangle(attacks[i].position.x, attacks[i].position.y, 10, 10, {252,231,43,255});
+
+        if (attacks[i].position.x > boss_position.x - 10*SPRITESCALE &&
+            attacks[i].position.x < boss_position.x + 10*SPRITESCALE &&
+            attacks[i].position.y > boss_position.y - 10*SPRITESCALE &&
+            attacks[i].position.y < boss_position.y + 10*SPRITESCALE) {
+                attacks.erase(attacks.begin() + i);
+                attackHit = true;
+            }
+        else
+            i++;
     }
 }
 

@@ -9,7 +9,7 @@ int main()
 {
     InitWindow(SCREENW, SCREENH, "Uter");
     loadTextures();
-    SetTargetFPS(60);
+    SetTargetFPS(144);
     Image icon = LoadImageFromTexture(PEOSTILL);
     SetWindowIcon(icon);
     //SetWindowState(FLAG_FULLSCREEN_MODE);
@@ -47,7 +47,7 @@ int main()
     int gameState = MENU;
 
     float dt;
-    SetExitKey(KEY_NULL);
+    //SetExitKey(KEY_NULL);
     bool running = true;
     while (running) 
     {
@@ -108,7 +108,13 @@ int main()
                 
                     DrawTextureEx(backgroundTexture, Vector2{0, 0}, 0, SPRITESCALE, Color{255, 255, 255, 255});
 
-                    player.update(boss.position);
+                    player.update();
+                    player.updateAttacks(boss.position);
+                    if (player.attackHit) {
+                        player.attackHit = false;
+                        boss.looseHealth(difficulty * 10);
+                    }
+
                     boss.draw();
                 EndTextureMode();
                 DrawTexturePro(renderTarget.texture, Rectangle{0,0,float(renderTarget.texture.width),float(-renderTarget.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, WHITE);

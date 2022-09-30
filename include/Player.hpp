@@ -10,12 +10,15 @@
 class Player {
 public:
     Player(Vector2 position, Texture2D texture, const int numberOfFrames, float scale);
-    void update(Vector2 boss_position);
+    void update();
+    void updateAttacks(Vector2 boss_position);
     
     bool dead = false;
     
     Vector2 position;
     Rectangle collisionRect;
+    bool attackHit = false;
+
 private:
     void dashMaking();
     

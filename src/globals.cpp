@@ -15,6 +15,15 @@ int ftint(float x) {
         return int(x - 0.5);
 }
 
+void minmax(float& num, float smallest, float biggest) {
+    if (num < smallest) {
+        num = smallest;
+    }
+    if (num > biggest) {
+        num = biggest;
+    }
+}
+
 void changeWindowSize(int newWidth, int newHeight) {
     SetWindowPosition(GetWindowPosition().x - (newWidth - SCREENW)/2, GetWindowPosition().y - (newHeight - SCREENH)/2);
     SetWindowSize(newWidth, newHeight);

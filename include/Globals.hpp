@@ -15,6 +15,7 @@ extern float SPRITESCALE;
 void changeWindowSize(int newWidth, int newHeight);
 
 int ftint(float x);
+void minmax(float& num, float smallest, float biggest);
 
 Color ConvertToRGBA(float r, float g, float b, float a);
 

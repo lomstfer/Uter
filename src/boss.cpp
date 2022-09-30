@@ -232,7 +232,8 @@ void Boss::updateAttacks(const Player& player) {
 
 void Boss::looseHealth(float amount) {
     health -= amount;
-    healthRect.height *= 1.5f + amount/6.f;
+    healthRect.height *= 1 + amount/10.f;
+    minmax(healthRect.height, 1.66f*SPRITESCALE, 30);
     if (health <= 0) {
         killed = true;
     }
