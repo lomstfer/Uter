@@ -1,5 +1,5 @@
-#ifndef PLAYER_HPP
-#define PLAYER_HPP
+#ifndef PLAYER_CREE_HPP
+#define PLAYER_CREE_HPP
 
 #include "Globals.hpp"
 #include <math.h>
@@ -19,7 +19,7 @@ public:
     Rectangle collisionRect;
     bool attackHit = false;
 
-    int damage = 10;
+    int damage = 30;
 
 private:
     void dashMaking();
@@ -47,19 +47,5 @@ private:
     std::vector<Attack> attacks;
     float attackTime = 0;
     float attackNow = 2;
-
-    // dash
-    bool dashing;
-    bool justPressedLeft;
-    bool justPressedRight;
-    float pressAgainTimeLeft;
-    float pressAgainTimeRight;
-    float pressAgainTimeCD;
-    float dashForce;
-    float dashTime;
-    float dashTimeCD;
-    float dashCooldownTime;
-    float dashCooldownCD;
-    bool just_dashed;
 };
 #endif

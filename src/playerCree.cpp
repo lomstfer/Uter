@@ -1,4 +1,4 @@
-#include "Player.hpp"
+#include "PlayerCree.hpp"
 
 Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, float scale)
 : position(position), sS(texture, numberOfFrames, scale)  {
@@ -8,29 +8,14 @@ Player::Player(Vector2 position, Texture2D texture, const int numberOfFrames, fl
                               (4) * SPRITESCALE, 
                               (7) * SPRITESCALE
                               };
-    runSpeed = 8000;
-    jumpForce = 2300;
+    runSpeed = 4000;
+    jumpForce = 1000;
     gravity = 10000;
     damp = 0.000001;
     airDamp = 0.001;
     jumps = 1;
     maxJumps = jumps;
     grounded = true;
-
-    // dash
-    dashCooldownCD = 0.5;
-    pressAgainTimeCD = 0.5;
-    dashForce = 5000;
-    dashTimeCD = 0.2;
-
-    dashing = false;
-    justPressedLeft = false;
-    justPressedRight = false;
-    pressAgainTimeLeft = 0;
-    pressAgainTimeRight = 0;
-    dashTime = 0;
-    dashCooldownTime = 0;
-    just_dashed = false;
 }
 
 Player::Attack::Attack(Vector2 position, Vector2 velocity)
@@ -52,7 +37,7 @@ void Player::update() {
         sS.texture = PEO_STILL;
     } 
     else {
-        sS.texture = PEO_SS;
+        sS.texture = CREE_SS;
     }
 
     if (abs(velocity.x) > 0) {
@@ -67,14 +52,12 @@ void Player::update() {
         sS.draw(position);
     }
     
-    if (!dashing) {
-        if (IsKeyDown(KEY_A)) {
-            velocity.x += -runSpeed * dt;
-        }
+    if (IsKeyDown(KEY_A)) {
+        velocity.x += -runSpeed * dt;
+    }
 
-        if (IsKeyDown(KEY_D)) {
-            velocity.x += runSpeed * dt;
-        }
+    if (IsKeyDown(KEY_D)) {
+        velocity.x += runSpeed * dt;
     }
     
     if (IsKeyDown(KEY_SPACE) && jumps > 0) {
@@ -84,8 +67,6 @@ void Player::update() {
     if (IsKeyReleased(KEY_SPACE)) {
         jumps = 0;
     }
-
-    dashMaking();
 
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
@@ -145,66 +126,5 @@ void Player::updateAttacks(Vector2 boss_position, bool boss_alive) {
             attacks.erase(attacks.begin() + i);
         else
             i++;
-    }
-}
-
-void Player::dashMaking() {
-    float dt = GetFrameTime();
-
-    if (dashing) {
-        just_dashed = true;
-        dashTime += dt;
-        if (dashTime >= dashTimeCD) {
-            dashTime = 0;
-            dashing = false;
-        }
-    }
-
-    if (just_dashed) {
-        dashCooldownTime += dt;
-        if (dashCooldownTime >= dashCooldownCD) {
-            dashCooldownTime = 0;
-            just_dashed = false;
-        }
-    }
-    
-    if (justPressedLeft) {
-        pressAgainTimeLeft += dt;
-        if (IsKeyPressed(KEY_A) && pressAgainTimeLeft < pressAgainTimeCD) {
-            velocity.x = -dashForce;
-            velocity.y = -dashForce / 7;
-            pressAgainTimeLeft = 0;
-            dashing = true;
-            justPressedLeft = false;
-        }
-        if (pressAgainTimeLeft >= pressAgainTimeCD) {
-            pressAgainTimeLeft = 0;
-            justPressedLeft = false;
-        }
-    }
-
-    if (IsKeyPressed(KEY_A) && dashing == false && just_dashed == false) {
-        justPressedLeft = true;
-        justPressedRight = false;
-    }
-
-    if (justPressedRight) {
-        pressAgainTimeRight += dt;
-        if (IsKeyPressed(KEY_D) && pressAgainTimeRight < pressAgainTimeCD) {
-            velocity.x = dashForce;
-            velocity.y = -dashForce / 7;
-            pressAgainTimeRight = 0;
-            dashing = true;
-            justPressedRight = false;
-        }
-        if (pressAgainTimeRight >= pressAgainTimeCD) {
-            pressAgainTimeRight = 0;
-            justPressedRight = false;
-        }
-    }
-
-    if (IsKeyPressed(KEY_D) && dashing == false && just_dashed == false) {
-        justPressedRight = true;
-        justPressedLeft = false;
     }
 }

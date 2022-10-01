@@ -44,21 +44,21 @@ Color ConvertToRGBA(float r, float g, float b, float a) {
     return Color{(unsigned char)(int(r*255 + 0.5)), (unsigned char)(int(g*255 + 0.5)), (unsigned char)(int(b*255 + 0.5)), (unsigned char)(int(a*255 + 0.5))};
 }
 
-Texture2D PEOSS;
-Texture2D PEOSTILL;
-Texture2D BOSSBIG;
-Texture2D RECTANGLE;
-Texture2D TRIANGLE;
+Texture2D PEO_SS;
+Texture2D PEO_STILL;
+
+Texture2D CREE_SS;
+Texture2D CREE_STILL;
+
 Texture2D SMALL_CIRCLE;
 Texture2D GROUND;
 int GROUND_HEIGHT = 42;
 
 void loadTextures() {
-    PEOSS = LoadTexture("assets/peo_run.png");
-    PEOSTILL = LoadTexture("assets/peo.png");
-    BOSSBIG = LoadTexture("assets/boss/boss_long.png");
-    RECTANGLE = LoadTexture("assets/boss/rectangle.png");
-    TRIANGLE = LoadTexture("assets/boss/triangle.png");
+    PEO_SS = LoadTexture("assets/peo_run.png");
+    PEO_STILL = LoadTexture("assets/peo.png");
+    CREE_SS = LoadTexture("assets/cree_walk.png");
+
     SMALL_CIRCLE = LoadTexture("assets/boss/small_circle.png");
     GROUND = LoadTexture("assets/ground.png");
 }

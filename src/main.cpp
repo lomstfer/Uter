@@ -10,9 +10,12 @@ int main()
     InitWindow(SCREENW, SCREENH, "Uter");
     loadTextures();
     SetTargetFPS(144);
-    Image icon = LoadImageFromTexture(PEOSTILL);
+    Image icon = LoadImageFromTexture(PEO_STILL);
     SetWindowIcon(icon);
     //SetWindowState(FLAG_FULLSCREEN_MODE);
+
+    Font font = LoadFont("assets/Silkscreen-Regular.ttf");
+
     float logTime = 0;
 
     int difficulty = 1; // load difficulty
@@ -23,7 +26,7 @@ int main()
     RenderTexture2D renderTarget = LoadRenderTexture(WINW, WINH);
     RenderTexture2D renderTargetPaused = LoadRenderTexture(WINW, WINH);
 
-    Player player = Player(Vector2{WINW/2.0f - PEOSTILL.width/2, WINH}, PEOSS, 4, SPRITESCALE);
+    Player player = Player(Vector2{WINW/2.0f - PEO_STILL.width/2, WINH}, PEO_SS, 4, SPRITESCALE);
 
     Boss boss = Boss(difficulty);
 
@@ -84,7 +87,7 @@ int main()
                     player.dead = true;
                     gameState = MENU;
                     player.~Player();
-                    Player player = Player(Vector2{WINW/2.0f - PEOSTILL.width/2, WINH}, PEOSS, 4, SPRITESCALE);
+                    Player player = Player(Vector2{WINW/2.0f - PEO_STILL.width/2, WINH}, PEO_SS, 4, SPRITESCALE);
                     boss = Boss(difficulty);
                 }
                 if (boss.killed) {
@@ -93,7 +96,8 @@ int main()
                     boss.update(player);
                     if (inBetweenTime >= inBetweenMax) {
                         inBetweenTime = 0;
-                        boss = Boss(difficulty + 1);
+                        difficulty += 1;
+                        boss = Boss(difficulty);
                     }
                 }
                 boss.update(player);
@@ -110,12 +114,15 @@ int main()
                     player.updateAttacks(boss.position, !boss.killed);
                     if (player.attackHit) {
                         player.attackHit = false;
-                        boss.looseHealth(difficulty * 100);
+                        boss.looseHealth(player.damage);
                     }
 
                     DrawTextureEx(GROUND, {0, WINH-GROUND.height*SPRITESCALE}, 0, SPRITESCALE, {255,255,255,255});
 
                     boss.draw();
+
+                    DrawTextEx(font, std::to_string(difficulty).c_str(), {10, WINH - 60}, 50, 0, BLACK);
+
                 EndTextureMode();
                 DrawTexturePro(renderTarget.texture, Rectangle{0,0,float(renderTarget.texture.width),float(-renderTarget.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, WHITE);
                 
@@ -132,7 +139,7 @@ int main()
                 BeginDrawing();
                 BeginTextureMode(renderTargetPaused);
                     ClearBackground({0,0,0,0});
-                    DrawTextEx(font, "paused", {0,0}, 100, 10, WHITE);
+                    DrawTextEx(font, "paused", {WINW/2 - 500,WINH/2 - 300}, 100, 0, WHITE);
                 EndTextureMode();
                 DrawTexturePro(renderTarget.texture, Rectangle{0,0,float(renderTarget.texture.width),float(-renderTarget.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, {100,100,100,255});
                 DrawTexturePro(renderTargetPaused.texture, Rectangle{0,0,float(renderTargetPaused.texture.width),float(-renderTargetPaused.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, {255,255,255,255});
