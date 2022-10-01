@@ -11,7 +11,7 @@ class Player {
 public:
     Player(Vector2 position, Texture2D texture, const int numberOfFrames, float scale);
     void update();
-    void updateAttacks(Vector2 boss_position);
+    void updateAttacks(Vector2 boss_position, bool boss_alive);
     
     bool dead = false;
     

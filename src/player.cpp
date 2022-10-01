@@ -90,8 +90,8 @@ void Player::update() {
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
 
-    if (position.y + sS.fHeight/2 * sS.scale > WINH) {
-        position.y = WINH - sS.fHeight/2 * sS.scale;
+    if (position.y + sS.fHeight/2 * sS.scale > WINH-GROUND_HEIGHT*SPRITESCALE) {
+        position.y = WINH-GROUND_HEIGHT*SPRITESCALE - sS.fHeight/2 * sS.scale;
         jumps = maxJumps;
         grounded = true;
 
@@ -118,9 +118,10 @@ void Player::update() {
                     (7) * SPRITESCALE};
 }
 
-void Player::updateAttacks(Vector2 boss_position) {
+void Player::updateAttacks(Vector2 boss_position, bool boss_alive) {
     float dt = GetFrameTime();
-    attackTime += dt;
+    if (boss_alive)
+        attackTime += dt;
     if (attackTime >= attackNow) {
         attackTime = 0;
         float d = sqrt(pow(boss_position.x - position.x,2) + pow(boss_position.y - position.y,2));
@@ -131,7 +132,7 @@ void Player::updateAttacks(Vector2 boss_position) {
         attacks[i].velocity.y += 100.f * dt;
         attacks[i].position.x += attacks[i].velocity.x * dt;
         attacks[i].position.y += attacks[i].velocity.y * dt;
-        DrawRectangle(attacks[i].position.x, attacks[i].position.y, 10, 10, {252,231,43,255});
+        DrawRectangle(attacks[i].position.x, attacks[i].position.y, SPRITESCALE, SPRITESCALE, {252,231,43,255});
 
         if (attacks[i].position.x > boss_position.x - 10*SPRITESCALE &&
             attacks[i].position.x < boss_position.x + 10*SPRITESCALE &&
@@ -140,6 +141,8 @@ void Player::updateAttacks(Vector2 boss_position) {
                 attacks.erase(attacks.begin() + i);
                 attackHit = true;
             }
+        else if (attacks[i].position.y > WINH)
+            attacks.erase(attacks.begin() + i);
         else
             i++;
     }

@@ -19,8 +19,6 @@ int main()
 
     float inBetweenTime = 0;
     float inBetweenMax = 5;
-
-    Font font = LoadFont("build/assets/caveat.ttf");
     
     RenderTexture2D renderTarget = LoadRenderTexture(WINW, WINH);
     RenderTexture2D renderTargetPaused = LoadRenderTexture(WINW, WINH);
@@ -47,7 +45,7 @@ int main()
     int gameState = MENU;
 
     float dt;
-    //SetExitKey(KEY_NULL);
+    SetExitKey(KEY_NULL);
     bool running = true;
     while (running) 
     {
@@ -106,14 +104,16 @@ int main()
                 BeginTextureMode(renderTarget);
                     ClearBackground(Color{0, 0, 0, 255});
                 
-                    DrawTextureEx(backgroundTexture, Vector2{0, 0}, 0, SPRITESCALE, Color{255, 255, 255, 255});
+                    DrawTextureEx(backgroundTexture, {0, 0}, 0, SPRITESCALE, {255,255,255,255});
 
                     player.update();
-                    player.updateAttacks(boss.position);
+                    player.updateAttacks(boss.position, !boss.killed);
                     if (player.attackHit) {
                         player.attackHit = false;
-                        boss.looseHealth(difficulty * 10);
+                        boss.looseHealth(difficulty * 100);
                     }
+
+                    DrawTextureEx(GROUND, {0, WINH-GROUND.height*SPRITESCALE}, 0, SPRITESCALE, {255,255,255,255});
 
                     boss.draw();
                 EndTextureMode();

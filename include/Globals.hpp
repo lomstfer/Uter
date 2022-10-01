@@ -16,6 +16,7 @@ void changeWindowSize(int newWidth, int newHeight);
 
 int ftint(float x);
 void minmax(float& num, float smallest, float biggest);
+int randInt(int lower, int higher);
 
 Color ConvertToRGBA(float r, float g, float b, float a);
 
@@ -26,6 +27,8 @@ extern Texture2D BOSSBIG;
 extern Texture2D RECTANGLE;
 extern Texture2D TRIANGLE;
 extern Texture2D SMALL_CIRCLE;
+extern Texture2D GROUND;
+extern int GROUND_HEIGHT;
 
 void loadTextures();
 

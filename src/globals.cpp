@@ -24,6 +24,11 @@ void minmax(float& num, float smallest, float biggest) {
     }
 }
 
+int randInt(int lower, int higher)
+{
+    return rand()%(higher - lower + 1) + lower;
+}
+
 void changeWindowSize(int newWidth, int newHeight) {
     SetWindowPosition(GetWindowPosition().x - (newWidth - SCREENW)/2, GetWindowPosition().y - (newHeight - SCREENH)/2);
     SetWindowSize(newWidth, newHeight);
@@ -45,6 +50,8 @@ Texture2D BOSSBIG;
 Texture2D RECTANGLE;
 Texture2D TRIANGLE;
 Texture2D SMALL_CIRCLE;
+Texture2D GROUND;
+int GROUND_HEIGHT = 42;
 
 void loadTextures() {
     PEOSS = LoadTexture("assets/peo_run.png");
@@ -53,4 +60,5 @@ void loadTextures() {
     RECTANGLE = LoadTexture("assets/boss/rectangle.png");
     TRIANGLE = LoadTexture("assets/boss/triangle.png");
     SMALL_CIRCLE = LoadTexture("assets/boss/small_circle.png");
+    GROUND = LoadTexture("assets/ground.png");
 }

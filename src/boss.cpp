@@ -39,7 +39,7 @@ Boss::Boss(int difficulty)
     rotation = 0;
     rotationSpeed = 0;
     rotationSpeedMax = 20;
-    shape = rand()%2+1;
+    shape = 3;//rand()%2+1;
 
     switch (shape)
     {
@@ -75,7 +75,27 @@ Boss::Boss(int difficulty)
         // bottom
         p3s = {p2e.x, p2e.y};
         p3e = {p1e.x, p1e.y};
-    
+    break;
+
+    case 3:
+        // triangle
+        shapeT = LoadRenderTexture(80, 80);
+        
+        p1s = {randInt(0.2f*shapeT.texture.width, 0.8f*shapeT.texture.width) , randInt(0.2f*shapeT.texture.height, 0.8f*shapeT.texture.height)};
+        p1e = {randInt(0.2f*shapeT.texture.width, 0.8f*shapeT.texture.width) , randInt(0.2f*shapeT.texture.height, 0.8f*shapeT.texture.height)};
+
+        p2s = {p1e.x, p1e.y};
+        p2e = {randInt(0.2f*shapeT.texture.width, 0.8f*shapeT.texture.width) , randInt(0.2f*shapeT.texture.height, 0.8f*shapeT.texture.height)};
+
+        p3s = {p2e.x, p2e.y};
+        p3e = {randInt(0.2f*shapeT.texture.width, 0.8f*shapeT.texture.width) , randInt(0.2f*shapeT.texture.height, 0.8f*shapeT.texture.height)};
+
+        p4s = {p3e.x, p3e.y};
+        p4e = {randInt(0.2f*shapeT.texture.width, 0.8f*shapeT.texture.width) , randInt(0.2f*shapeT.texture.height, 0.8f*shapeT.texture.height)};
+
+        p5s = {p4e.x, p4e.y};
+        p5e = {p1s.x, p1s.y};
+    break;
     default: break;
     }
     
@@ -167,7 +187,34 @@ void Boss::update(const Player& player) {
             DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,{255,255,255,alphaOnBoss});
             DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,{255,255,255,alphaOnBoss});
         EndTextureMode();
-    
+    break;
+
+    case 3:
+        p1s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p1s);
+        p1e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p1e);
+
+        p2s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p2s);
+        p2e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p2e);
+
+        p3s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p3s);
+        p3e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p3e);
+
+        p4s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p4s);
+        p4e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p4e);
+
+        p5s = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p5s);
+        p5e = rotatePoint(shapeT.texture.width/2, shapeT.texture.height/2, rotationSpeed * 0.05 * GetFrameTime(), p5e);
+
+        BeginTextureMode(shapeT);
+            ClearBackground(Color{0, 0, 0, 0});
+            
+            DrawLine(p1s.x,p1s.y,p1e.x,p1e.y,{255,255,255,alphaOnBoss});
+            DrawLine(p2s.x,p2s.y,p2e.x,p2e.y,{255,255,255,alphaOnBoss});
+            DrawLine(p3s.x,p3s.y,p3e.x,p3e.y,{255,255,255,alphaOnBoss});
+            DrawLine(p4s.x,p4s.y,p4e.x,p4e.y,{255,255,255,alphaOnBoss});
+            DrawLine(p5s.x,p5s.y,p5e.x,p5e.y,{255,255,255,alphaOnBoss});
+        EndTextureMode();
+    break;
     default: break;
     }
 
@@ -204,8 +251,8 @@ void Boss::updateAttacks(const Player& player) {
         }
         if (killed) {
             attackList[i].velocity.x = 0;
-            attackList[i].velocity.y += attackList[i].position.y / 5.f * GetFrameTime();
-            attackList[i].alpha -= attackList[i].position.y / 5.f * GetFrameTime();
+            attackList[i].velocity.y = 0;
+            attackList[i].alpha -= 60.f * GetFrameTime();
             if (attackList[i].alpha < 0) 
                 attackList[i].alpha = 0;
         }
@@ -221,7 +268,7 @@ void Boss::updateAttacks(const Player& player) {
             attackList.erase(attackList.begin() + i);
             killedPlayer = true;
         }
-        else  if (attackList[i].position.y > WINH + 100 || attackList[i].alpha <= 0) {
+        else  if (attackList[i].position.y > WINH - GROUND_HEIGHT + 50 || attackList[i].alpha <= 0) {
             attackList.erase(attackList.begin() + i);
         }
         else {
