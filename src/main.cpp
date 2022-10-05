@@ -121,7 +121,7 @@ int main()
 
                     boss.draw();
 
-                    DrawTextEx(font, std::to_string(difficulty).c_str(), {10, WINH - 60}, 50, 0, BLACK);
+                    DrawTextEx(font, std::to_string(difficulty - 1).c_str(), {10, WINH - 60}, 50, 0, BLACK);
 
                 EndTextureMode();
                 DrawTexturePro(renderTarget.texture, Rectangle{0,0,float(renderTarget.texture.width),float(-renderTarget.texture.height)}, Rectangle{0,0,float(SCREENW),float(SCREENH)}, Vector2{0,0}, 0, WHITE);
