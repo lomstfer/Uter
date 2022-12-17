@@ -9,10 +9,10 @@ int main()
 {
     InitWindow(SCREENW, SCREENH, "Uter");
     loadTextures();
-    SetTargetFPS(144);
+    SetTargetFPS(60);
     Image icon = LoadImageFromTexture(PEO_STILL);
     SetWindowIcon(icon);
-    //SetWindowState(FLAG_FULLSCREEN_MODE);
+    SetWindowState(FLAG_FULLSCREEN_MODE);
 
     Font font = LoadFont("assets/Silkscreen-Regular.ttf");
 
